@@ -1,7 +1,7 @@
 === RB Internal Links ===
 Contributors: cohen
 Donate link: http://www.blograndom.com
-Tags: link, posts, slugs, permalinks
+Tags: links, posts, slugs, permalinks
 Requires at least: 2.0.2
 Tested up to: 2.3
 
