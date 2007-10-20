@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: RB Internal Links
-Version: 0.1
+Version: 0.11
 Plugin URI: http://www.blograndom.com/extras/
 Author: Cohen
 Author URI: http://www.blograndom.com/
