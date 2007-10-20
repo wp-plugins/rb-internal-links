@@ -11,7 +11,7 @@ var TinyMCE_RBInternalPlugin = {
 	getControlHTML : function(cn) {
 		switch (cn) {
 			case "rbinternallinks":
-				var button = '<a id="mce_editor_0_rbinternallinks" href="javascript:tinyMCE.execInstanceCommand(\'{$editor_id}\',\'mceAnarchyMediaInsert\');" onclick="tinyMCE.execInstanceCommand(\'{$editor_id}\',\'mceRBInternalLinkInsert\');return false;" onmousedown="return false;" class="mceButtonNormal" target="_self"><img src="{$pluginurl}/images/icon.gif" title="RB Internal Links"></a>';
+				var button = '<a id="mce_editor_0_rbinternallinks" href="javascript:tinyMCE.execInstanceCommand(\'{$editor_id}\',\'mceRBInternalLinkInsert\');" onclick="tinyMCE.execInstanceCommand(\'{$editor_id}\',\'mceRBInternalLinkInsert\');return false;" onmousedown="return false;" class="mceButtonNormal" target="_self"><img src="{$pluginurl}/images/icon.gif" title="RB Internal Links"></a>';
 				return button;
 		}
 		return "";

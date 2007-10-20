@@ -2,8 +2,9 @@
 Contributors: cohen
 Donate link: http://www.blograndom.com
 Tags: links, posts, slugs, permalinks
-Requires at least: 2.0.2
+Requires at least: 2.1
 Tested up to: 2.3
+Stable tag: 0.11
 
 Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
 
@@ -46,3 +47,8 @@ Using the tinymce wysiwyg editor:
 	Fill in the optional properties for the link
 	Click "Insert Link"
 
+== Change Log ==
+
+v0.11
+- Updating some spelling mistakes
+- Added debug information for missing wysiwyg icon

@@ -121,7 +121,7 @@ function rbinternal_render_content($verb, $params){
 // tinyMCE functions
 function rbinternal_addbuttons() {    
 	global $wp_db_version;    
-	// Check for WordPress 2.1+ and that its turned o  
+	// Check for WordPress 2.1+ and that its turned on
 	if(3664 <= $wp_db_version AND get_option('rbinternal_tinymce') == 1){  
 		if ('true' == get_user_option('rich_editing')) {
 		add_filter("mce_plugins", "rbinternal_mce_plugins", 10);
@@ -232,6 +232,11 @@ function rbinternal_admin_page(){
 <p class="submit">
 <input type="submit" name="Submit" value="Update Options" />
 </p>
+
+<h2>Debug:</h2>
+<p>DB Version: <?php global $wp_db_version; echo $wp_db_version; ?></p>
+<p>Rich Editing Enabled: <?php if ('true' == get_user_option('rich_editing')) echo 'Yes'; else echo 'No'; ?></p>
+<p>Plugin wysiwyg enabled: <?php if (get_option('rbinternal_tinymce') == 1) echo 'Yes'; else echo 'No'; ?></p>
 
 </form>
 </div>
