@@ -4,7 +4,7 @@ Donate link: http://www.blograndom.com
 Tags: links, posts, slugs, permalinks
 Requires at least: 2.1
 Tested up to: 2.3
-Stable tag: 0.11
+Stable tag: 0.13
 
 Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
 
@@ -29,26 +29,39 @@ For more information visit http://www.blograndom.com/blog/extras/rb-internal-lin
 To manually link a page:
 
 	At the place you would like the link to appear write ( ignoring the ticks - i.e. ` ):
-		`{{post id="post-slug" text="link text"}}` OR `{{post id="post-id" text="link text"}}`
+		`<!--intlink id="post-slug" text="link text"-->` OR `<!--post id="post-id" text="link text"-->`
 	...exchanging post-slug or post-id for the post or page slug/id you would like to link to.
 
 	Note:
 	- text is the text or html you would like to put within the anchor tag and should be ok with anything other than { or ".
 	- you can specify a class for the link using ... `class="my_class"` ...
 	- you can specify a target for the link using ... `target="_new"` ...
+	- you can put html in to the text parameter (e.g. <img src='myimage.gif' />), just don't use " (quote marks) in the html
 	
 Using the tinymce wysiwyg editor:
 
 	Make sure you've ticked "enable wysiwyg editor" on the plugin preferences page.
 	A new icon will appear on the wysiwyg toolbar, it looks like a page with a link over it
-	Clicking on the icon will pop-up a toolbox
-	Select the category the post you need is in or alternatively, choose pages for a list of pages
+	Select the text you wish to turn in to a link (optional)
+	Click on the icon, a toolbox should popup
+	Select the category of the post you need or alternatively choose pages for a list of pages
 	Click on the post or page you wish to link to
 	Fill in the optional properties for the link
 	Click "Insert Link"
 
 == Change Log ==
+v0.13 (23/10/2007)
+- Changed charset to utf-8 for tinymce plugin (thanks to vanco)
+- Put in option for ID or slug returned to editor, default to be ID (good idea, thanks again vanco)
+- Support for creating an internal link with an image
+- The intlink code is now hidden in visual mode, replaced with the highlighted text
+- The parsing engine has been completely rewritten for speed and scalability
+- Some code changes that should help people with problems related to the wysiwyg icon not turning up
+- Added filter for 'the_content_rss'
 
-v0.11
+v0.12 (21/10/2007)
+- Stopped selected text with quote marks in from breaking the wysiwyg plugin
+
+v0.11  (19/10/2007)
 - Updating some spelling mistakes
 - Added debug information for missing wysiwyg icon

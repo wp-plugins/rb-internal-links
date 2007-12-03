@@ -14,7 +14,7 @@ switch($action){
 			$articles = get_posts('numberposts=0&category='.$category.'&orderby='.get_option('rbinternal_post_orderby').'&order='.get_option('rbinternal_post_sort'));
 		$posts = '<ul>';
 		foreach($articles AS $article)
-			$posts .= '<li id="article_'.$article->ID.'"><span class="date">'.substr($article->post_date, 0, 10).'</span><a href="javascript:;" onclick="properties(\''.$article->post_name.'\');">'.$article->post_title.'</a></li>';
+			$posts .= '<li id="article_'.$article->ID.'"><span class="date">'.substr($article->post_date, 0, 10).'</span><a href="javascript:;" onclick="properties(\''.( get_option('rbinternal_return_param' == 'slug')? $article->post_name : $article->ID ).'\');">'.$article->post_title.'</a></li>';
 		if(empty($articles)) $posts .= '<li>No posts found.</li>';
 		$posts .= '</ul>';
 		die("document.getElementById('".$returnDiv."').innerHTML = \"".addslashes(str_replace("\n", '', $posts))."\"");
@@ -26,7 +26,7 @@ switch($action){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>RB Internal Linker</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script language="javascript" type="text/javascript">
 	var rbinternal_url = "<?php echo $rbinternal_url; ?>"; 
 	</script>
@@ -40,7 +40,7 @@ switch($action){
 		document.getElementById('pagesContainer').style.display='none';
 		document.getElementById('propertiesContainer').style.display='none';
 		document.getElementById('pages').innerHTML='';
-		document.getElementById('linkText').value = '<?php echo $linktext; ?>';
+		document.getElementById('linkText').value = '<?php echo addslashes($linktext); ?>';
 		document.getElementById('linkClass').value = '';
 		document.getElementById('linkTarget').value = '';
 	}
@@ -78,10 +78,10 @@ switch($action){
 	the_class = document.getElementById('linkClass').value;
 	the_target = document.getElementById('linkTarget').value;
 	
-	rCode = '{{post id="' + the_postId + '" text="' + the_text + '"';
+	rCode = '<!--intlink id="' + the_postId + '" text="' + the_text + '"';
 	if(the_class != '') rCode += ' class="' + the_class + '"';
 	if(the_target != '') rCode += ' target="' + the_target + '"';
-	rCode += '}}';
+	rCode += '-->';
 	
 	tinyMCEPopup.execCommand("mceInsertContent", false, rCode);
 	tinyMCEPopup.close();
