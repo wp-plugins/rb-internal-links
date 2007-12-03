@@ -2,7 +2,7 @@
 /*
 Plugin Name: RB Internal Links
 Version: 0.13
-Plugin URI: http://www.blograndom.com/extras/
+Plugin URI: http://www.blograndom.com/blog/extras/
 Author: Cohen
 Author URI: http://www.blograndom.com/
 Description: Use wiki style tags to link to internal posts and pages within your blog without hardcoding them.
