@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: RB Internal Links
-Version: 0.13
+Version: 0.14
 Plugin URI: http://www.blograndom.com/blog/extras/
 Author: Cohen
 Author URI: http://www.blograndom.com/
@@ -119,9 +119,9 @@ function rbinternal_external_plugins() {
 
 function rbinternal_admin_header(){
 	global $rbinternal_url;
-	echo '<script language="JavaScript" type="text/javascript">' . "\n" . '/* <![CDATA[ */' . "\n";
+	echo '<script language="JavaScript" type="text/javascript">' . "\n" . '// <![CDATA[ ' . "\n";
 	echo 'var rbinternal_url="'. $rbinternal_url .'";' . "\n";
-	echo '/* ]]> */' . "\n" . '</script>';
+	echo '// ]]>' . "\n" . '</script>';
 }
 
 function rbinternal_add_pages(){

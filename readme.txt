@@ -4,7 +4,7 @@ Donate link: http://www.blograndom.com
 Tags: links, posts, slugs, permalinks
 Requires at least: 2.1
 Tested up to: 2.3
-Stable tag: 0.13
+Stable tag: 0.14
 
 Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
 
@@ -48,8 +48,14 @@ Using the tinymce wysiwyg editor:
 	Click on the post or page you wish to link to
 	Fill in the optional properties for the link
 	Click "Insert Link"
+	
+== To do ==
+- Made a <!--extlink for items in the blog roll
+- Take changes from the highlighted text in Visual mode and apply them to the link code
 
 == Change Log ==
+v0.14 (19/12/2007)
+- Changed CDATA comment tags from /* */ to //, which should resolve issues with the tinymce icon
 v0.13 (23/10/2007)
 - Changed charset to utf-8 for tinymce plugin (thanks to vanco)
 - Put in option for ID or slug returned to editor, default to be ID (good idea, thanks again vanco)
