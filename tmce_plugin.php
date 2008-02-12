@@ -77,10 +77,12 @@ switch($action){
 	the_text = document.getElementById('linkText').value;
 	the_class = document.getElementById('linkClass').value;
 	the_target = document.getElementById('linkTarget').value;
+	the_anchor = document.getElementById('linkAnchor').value;
 	
-	rCode = '<!--intlink id="' + the_postId + '" text="' + the_text + '"';
+	rCode = '<span class="rbIntLinkText">' + the_text + '<!--pintlink id="' + the_postId + '" text="' + the_text + '"';
 	if(the_class != '') rCode += ' class="' + the_class + '"';
 	if(the_target != '') rCode += ' target="' + the_target + '"';
+	if(the_anchor != '') rCode += ' anchor="' + the_anchor + '"';
 	rCode += '-->';
 	
 	tinyMCEPopup.execCommand("mceInsertContent", false, rCode);
@@ -103,6 +105,7 @@ switch($action){
 	.row{position: relative; float: left; clear: left; margin-bottom: 5px;}
 	.action{position: relative; float: left; clear: left; padding: 2px; background-color: #E5F3FF; width: 330px; text-align: right;}
 	.textinput{ width: 250px; }
+	.textinputsmall{ width: 150px; }
 	label{position: relative; float: left; clear: left; margin: 0 5px 5px 0; width: 80px; padding-top: 2px;}
 	.back{position: relative; float: left; clear: left; margin-top: 10px;}
 	</style>	
@@ -148,7 +151,7 @@ switch($action){
 		<label>Link Text:</label><input type="text" class="textinput" id="linkText" value="<?php echo $linktext; ?>" />
 	</div>
 	<div class="row">
-		<label>Link Class:</label><input type="text" class="textinput" id="linkClass" value="" />
+		<label>Link Class:</label><input type="text" class="textinputsmall" id="linkClass" value="" />
 	</div>
 	<div class="row">
 	<label>Link Target:</label>
@@ -159,6 +162,9 @@ switch($action){
 			<option value="_self">_self</option>
 			<option value="_top">_top</option>
 		</select>
+	</div>
+	<div class="row">
+		<label>Link anchor:</label>#<input type="text" class="textinputsmall" id="linkAnchor" value="" />
 	</div>
 	<div class="action"><input type="button" value="Insert Link" onclick="insertLink();" /></div>
 	<a href="javascript:;" onclick="showcategories();" class="back">Back to categories</a>

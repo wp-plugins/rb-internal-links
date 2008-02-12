@@ -77,7 +77,7 @@ function rbinternal_render_content($verb, $params){
 		case 'post': //backwards compatibility
 			if(!isset($params['id'])) return false;
 			if(!isset($params['text'])) $params['text'] = 0;
-			$html = '<a href="'. rbinternal_get_url($params['id'], $params['text']) .'" '; 
+			$html = '<a href="'. rbinternal_get_url($params['id'], $params['text']) . ((isset($params['anchor']))? '#' . $params['anchor'] : '') . '" '; 
 			if(isset($params['class'])) $html .= 'class="'. $params['class'] . '" ';
 			if(isset($params['target'])) $html .= 'target="'. $params['target'] . '" '; 
 			$html .= '>'. $params['text'] .'</a>';
