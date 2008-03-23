@@ -3,8 +3,8 @@ Contributors: cohen
 Donate link: http://www.blograndom.com
 Tags: links, posts, slugs, permalinks
 Requires at least: 2.1
-Tested up to: 2.3
-Stable tag: 0.15
+Tested up to: 2.5
+Stable tag: 0.20
 
 Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
 
