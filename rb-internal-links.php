@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: RB Internal Links
-Version: 0.14
+Version: 0.15
 Plugin URI: http://www.blograndom.com/blog/extras/
 Author: Cohen
 Author URI: http://www.blograndom.com/
@@ -11,35 +11,68 @@ Installation: See readme.
 
 */
 
+$rbinternal_version = '0.155';
+
 // set up important actions and filters 
 add_filter('the_content', 'rbinternal_parse_content', 1);
 add_filter('the_content_rss', 'rbinternal_parse_content', 1);
 add_filter('the_excerpt', 'rbinternal_parse_content', 1);
-add_action('init', 'rbinternal_addbuttons');
+add_action('init', 'rbinternal_init');
 add_action('admin_head', 'rbinternal_admin_header', 10);
 add_action('admin_menu', 'rbinternal_add_pages');
 
-// set some default options
-add_option('rbinternal_tinymce', 1);
-add_option('rbinternal_post_orderby', 'post_date');
-add_option('rbinternal_post_sort', 'DESC');
-add_option('rbinternal_page_orderby', 'post_title');
-add_option('rbinternal_page_sort', 'ASC');
-add_option('rbinternal_return_param', 'ID');
-
 $rbinternal_url = get_settings('siteurl').'/wp-content/plugins/rb-internal-links/';
 
+function rbinternal_init(){
+
+	global $rbinternal_version;
+	$current_version = get_option('rbinternal_version');
+	
+	if($rbinternal_version != $current_version){
+		rbinternal_update($rbinternal_version, $current_version);
+		update_option('rbinternal_version', $rbinternal_version);
+	}
+	
+
+	rbinternal_addbuttons();
+	
+}
+
+function rbinternal_update($version, $current_version){
+	
+	// set some default options
+	add_option('rbinternal_tinymce', 1);
+	add_option('rbinternal_post_orderby', 'post_date');
+	add_option('rbinternal_post_sort', 'DESC');
+	add_option('rbinternal_page_orderby', 'post_title');
+	add_option('rbinternal_page_sort', 'ASC');
+	add_option('rbinternal_return_par	am', 'ID');
+	
+	add_filter('tiny_mce_version', 'rbinternal_refresh_mce'); // update tinymce cache	
+	
+}
+
+function rbinternal_refresh_mce($ver) {  $ver += 36;  return $ver;}
+
 // this function gets the url based on post id or slug
-function rbinternal_get_url($post, &$text) {
+function rbinternal_get_url($id, &$text, $type) {
 	global $wpdb;
 	
-	if(empty($post)) return false;
-	$field = (is_numeric($post))? 'ID' : 'post_name';
-	$post = $wpdb->get_row("SELECT ID, post_title FROM $wpdb->posts WHERE $field = '$post'");
-	if(empty($post->post_title)) return false;
-	elseif(empty($text)) $text = $post->post_title;
+	if(empty($id)) return false;
 	
-	return get_permalink($post->ID);
+	switch($type){
+		case 'post':
+			$field = (is_numeric($id))? 'ID' : 'post_name';
+			$post = $wpdb->get_row("SELECT ID, post_title FROM $wpdb->posts WHERE $field = '$id'");
+			if(empty($post->post_title)) return false;
+			elseif(empty($text)) $text = $post->post_title;
+			
+			return get_permalink($post->ID);
+		case 'category':
+			return get_category_link($id);
+		default:
+			return false;
+	}
 	
 }
 
@@ -72,12 +105,14 @@ function rbinternal_parse_params($verb, $paramStr){
 
 function rbinternal_render_content($verb, $params){
 	
+	if(!isset($params['type'])) $params['type'] = 'post';
+	
 	switch($verb){
 		case 'intlink':
 		case 'post': //backwards compatibility
 			if(!isset($params['id'])) return false;
 			if(!isset($params['text'])) $params['text'] = 0;
-			$html = '<a href="'. rbinternal_get_url($params['id'], $params['text']) . ((isset($params['anchor']))? '#' . $params['anchor'] : '') . '" '; 
+			$html = '<a href="'. rbinternal_get_url($params['id'], $params['text'], $params['type']) . ((isset($params['anchor']))? '#' . $params['anchor'] : '') . '" '; 
 			if(isset($params['class'])) $html .= 'class="'. $params['class'] . '" ';
 			if(isset($params['target'])) $html .= 'target="'. $params['target'] . '" '; 
 			$html .= '>'. $params['text'] .'</a>';
@@ -92,8 +127,12 @@ function rbinternal_render_content($verb, $params){
 // tinyMCE functions
 function rbinternal_addbuttons() {    
 	global $wp_db_version;    
+	// Check for WordPress 2.5+ and that its turned on
+	if($wp_db_version >= 7098 AND get_option('rbinternal_tinymce') == 1){
+		// Don't bother doing this stuff if the current user lacks permissions	   if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') )	     return;	 	   // Add only in Rich Editor mode	   if ( get_user_option('rich_editing') == 'true') {	     add_filter("mce_external_plugins", "rbinternal_external_plugins_25");	     add_filter('mce_buttons', 'rbinternal_mce_buttons');
+	     add_filter("mce_css", "rbinternal_mce_css");	   }
 	// Check for WordPress 2.1+ and that its turned on
-	if(3664 <= $wp_db_version AND get_option('rbinternal_tinymce') == 1){  
+	}elseif(3664 <= $wp_db_version AND get_option('rbinternal_tinymce') == 1){  
 		if ('true' == get_user_option('rich_editing')) {
 		add_filter("mce_plugins", "rbinternal_mce_plugins", 10);
 		add_filter("mce_buttons", "rbinternal_mce_buttons", 10);
@@ -101,18 +140,28 @@ function rbinternal_addbuttons() {
 		}
 	}
 }
+// pre v2.5 tinymce plugin load
 function rbinternal_mce_plugins($plugins) {    
 	array_push($plugins, "-rbinternallinks");    
 	return $plugins;
 }
-function rbinternal_mce_buttons($buttons) {
-	array_push($buttons, "separator", "rbinternallinks");
-	return $buttons;
-}
+// pre 2.5 plugin load
 function rbinternal_external_plugins() {	
 	global $rbinternal_url;
 	echo 'tinyMCE.loadPlugin("rbinternallinks", "'.$rbinternal_url.'tmce/rb-internal-links/");' . "\n"; 
 	return;
+}
+// Load the TinyMCE plugin : editor_plugin.js (wp2.5)function rbinternal_external_plugins_25($plugin_array) {
+	global $rbinternal_url;   $plugin_array['rbinternallinks'] = $rbinternal_url.'tmce/rb-internal-links/editor_plugin_25.js';   return $plugin_array;}
+// 2.5 + pre 2.5 button load
+function rbinternal_mce_buttons($buttons) {
+	array_push($buttons, "separator", "rbinternallinks");
+	return $buttons;
+}
+// 2.5 + mce css load
+function rbinternal_mce_css($css){
+	global $rbinternal_url;
+	return $css . ',' . $rbinternal_url.'styles.css';
 }
 
 

@@ -14,7 +14,7 @@ switch($action){
 			$articles = get_posts('numberposts=0&category='.$category.'&orderby='.get_option('rbinternal_post_orderby').'&order='.get_option('rbinternal_post_sort'));
 		$posts = '<ul>';
 		foreach($articles AS $article)
-			$posts .= '<li id="article_'.$article->ID.'"><span class="date">'.substr($article->post_date, 0, 10).'</span><a href="javascript:;" onclick="properties(\''.( get_option('rbinternal_return_param' == 'slug')? $article->post_name : $article->ID ).'\');">'.$article->post_title.'</a></li>';
+			$posts .= '<li id="article_'.$article->ID.'"><span class="date">'.substr($article->post_date, 0, 10).'</span><a href="javascript:;" onclick="properties(\''.( get_option('rbinternal_return_param' == 'slug')? $article->post_name : $article->ID ).'\', \'post\');">'.$article->post_title.'</a></li>';
 		if(empty($articles)) $posts .= '<li>No posts found.</li>';
 		$posts .= '</ul>';
 		die("document.getElementById('".$returnDiv."').innerHTML = \"".addslashes(str_replace("\n", '', $posts))."\"");
@@ -64,8 +64,10 @@ switch($action){
   
   }
 	
-	function properties(postId){
+	function properties(postId, linkType){
 		the_postId = postId;
+		the_linkType = linkType;
+		document.getElementById('categoriesContainer').style.display='none';
 		document.getElementById('pagesContainer').style.display='none';
 		document.getElementById('propertiesContainer').style.display='block';
 	}
@@ -79,7 +81,7 @@ switch($action){
 	the_target = document.getElementById('linkTarget').value;
 	the_anchor = document.getElementById('linkAnchor').value;
 	
-	rCode = '<span class="rbIntLinkText">' + the_text + '<!--pintlink id="' + the_postId + '" text="' + the_text + '"';
+	rCode = '<span class="rbIntLinkText">' + the_text + '<!--pintlink id="' + the_postId + '" type="' + the_linkType + '" text="' + the_text + '"';
 	if(the_class != '') rCode += ' class="' + the_class + '"';
 	if(the_target != '') rCode += ' target="' + the_target + '"';
 	if(the_anchor != '') rCode += ' anchor="' + the_anchor + '"';
@@ -99,8 +101,10 @@ switch($action){
 	a{text-decoration: none;}
 	a:hover{text-decoration: underline;}
 	ul{list-style-type: none; margin: 0; padding: 0;}
-	li{padding: 2px;}
-	ul.children{margin-left: 10px;}
+	li{position: relative; float: left; clear: left; padding: 2px;}
+	ul.children{position: relative; float: left; clear: left; margin-left: 10px;}
+	.options{position: relative; float: left; clear: left; margin-left: 10px; color: #999999; }
+	.options a:link{color: #999999; }
 	.date{background-color: #E5F3FF; margin-right: 2px; padding: 1px;}
 	.row{position: relative; float: left; clear: left; margin-bottom: 5px;}
 	.action{position: relative; float: left; clear: left; padding: 2px; background-color: #E5F3FF; width: 330px; text-align: right;}
@@ -126,7 +130,9 @@ switch($action){
   function rbinternal_tier_categories($data, $parent){
   	foreach($data AS $cat){
   		if($cat->category_parent == $parent){
-  			echo '<li id="category_'.$cat->cat_ID.'"><a href="javascript:;" onclick="getposts('.$cat->cat_ID.');">'.$cat->cat_name.'</a><ul class="children">';
+  			echo '<li id="category_'.$cat->cat_ID.'"><a href="javascript:;" onclick="getposts('.$cat->cat_ID.');">'.$cat->cat_name.'</a>';
+  			echo '<span class="options"><a href="javascript:;" onclick="getposts('.$cat->cat_ID.');">browse</a> | <a href="javascript:;" onclick="properties('.$cat->cat_ID.', \'category\');">link to</a></span>';
+  			echo '<ul class="children">';
   			echo rbinternal_tier_categories($data, $cat->cat_ID);
   			echo '</ul></li>';
   		}
