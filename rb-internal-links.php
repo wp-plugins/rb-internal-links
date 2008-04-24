@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: RB Internal Links
-Version: 0.20
+Version: 0.21
 Plugin URI: http://www.blograndom.com/blog/extras/
 Author: Cohen
 Author URI: http://www.blograndom.com/
@@ -11,7 +11,7 @@ Installation: See readme.
 
 */
 
-$rbinternal_version = '0.20';
+$rbinternal_version = '0.21';
 
 // set up important actions and filters 
 add_filter('the_content', 'rbinternal_parse_content', 1);
@@ -20,6 +20,8 @@ add_filter('the_excerpt', 'rbinternal_parse_content', 1);
 add_action('init', 'rbinternal_init');
 add_action('admin_head', 'rbinternal_admin_header', 10);
 add_action('admin_menu', 'rbinternal_add_pages');
+add_filter('tiny_mce_version', 'rbinternal_refresh_mce'); // update tinymce cache	
+
 
 $rbinternal_url = get_settings('siteurl').'/wp-content/plugins/rb-internal-links/';
 
@@ -47,9 +49,7 @@ function rbinternal_update($version, $current_version){
 	add_option('rbinternal_page_orderby', 'post_title');
 	add_option('rbinternal_page_sort', 'ASC');
 	add_option('rbinternal_return_par	am', 'ID');
-	
-	add_filter('tiny_mce_version', 'rbinternal_refresh_mce'); // update tinymce cache	
-	
+		
 }
 
 function rbinternal_refresh_mce($ver) {
