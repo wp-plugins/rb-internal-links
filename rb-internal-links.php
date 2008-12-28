@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: RB Internal Links
-Version: 0.21
+Version: 0.22
 Plugin URI: http://www.blograndom.com/blog/extras/
 Author: Cohen
 Author URI: http://www.blograndom.com/
@@ -128,45 +128,22 @@ function rbinternal_render_content($verb, $params){
 
 
 // tinyMCE functions
-function rbinternal_addbuttons() {    
-	global $wp_db_version;    
-	// Check for WordPress 2.5+ and that its turned on
-	if($wp_db_version >= 7098 AND get_option('rbinternal_tinymce') == 1){
-		// Don't bother doing this stuff if the current user lacks permissions
-	   if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') )
-	     return;
+function rbinternal_addbuttons() {        
+	// Check that the editor is turned on
+	if(get_option('rbinternal_tinymce') == 1 && current_user_can('edit_posts') && get_user_option('rich_editing') == 'true'){
 	 
-	   // Add only in Rich Editor mode
-	   if ( get_user_option('rich_editing') == 'true') {
-	     add_filter("mce_external_plugins", "rbinternal_external_plugins_25");
-	     add_filter('mce_buttons', 'rbinternal_mce_buttons');
-	     add_filter("mce_css", "rbinternal_mce_css");
-	   }
-	// Check for WordPress 2.1+ and that its turned on
-	}elseif(3664 <= $wp_db_version AND get_option('rbinternal_tinymce') == 1){  
-		if ('true' == get_user_option('rich_editing')) {
-		add_filter("mce_plugins", "rbinternal_mce_plugins", 10);
-		add_filter("mce_buttons", "rbinternal_mce_buttons", 10);
-		add_action('tinymce_before_init','rbinternal_external_plugins');
-		}
+		add_filter("mce_external_plugins", "rbinternal_external_plugins");
+	  add_filter('mce_buttons', 'rbinternal_mce_buttons');
+	  add_filter("mce_css", "rbinternal_mce_css");
+	  
 	}
 }
-// pre v2.5 tinymce plugin load
-function rbinternal_mce_plugins($plugins) {    
-	array_push($plugins, "-rbinternallinks");    
-	return $plugins;
-}
-// pre 2.5 plugin load
-function rbinternal_external_plugins() {	
-	global $rbinternal_url;
-	echo 'tinyMCE.loadPlugin("rbinternallinks", "'.$rbinternal_url.'tmce/rb-internal-links/");' . "\n"; 
-	return;
-}
+
 // Load the TinyMCE plugin : editor_plugin.js (wp2.5)
-function rbinternal_external_plugins_25($plugin_array) {
+function rbinternal_external_plugins($plugin_array) {
 	global $rbinternal_url;
-   $plugin_array['rbinternallinks'] = $rbinternal_url.'tmce/rb-internal-links/editor_plugin_25.js';
-   return $plugin_array;
+  $plugin_array['rbinternallinks'] = $rbinternal_url.'tmce/rb-internal-links/editor_plugin_25.js';
+  return $plugin_array;
 }
 // 2.5 + pre 2.5 button load
 function rbinternal_mce_buttons($buttons) {

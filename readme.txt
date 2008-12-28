@@ -2,9 +2,9 @@
 Contributors: cohen
 Donate link: http://www.blograndom.com
 Tags: links, posts, slugs, permalinks
-Requires at least: 2.1
-Tested up to: 2.5
-Stable tag: 0.21
+Requires at least: 2.5
+Tested up to: 2.7
+Stable tag: 0.22
 
 Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
 
@@ -54,6 +54,8 @@ Using the tinymce wysiwyg editor:
 - Take changes from the highlighted text in Visual mode and apply them to the link code
 
 == Change Log ==
+v0.22 (28/12/2008)
+- tinyMCE language file using new format, compatibility with wordpress version 2.7
 v0.15 (27/01/2008)
 - Fixed bug with visual mode insertion hiding newly inserted link
 - Added anchor parameter for linking to anchors within pages
