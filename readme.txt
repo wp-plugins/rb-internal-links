@@ -10,8 +10,12 @@ Link to internal posts and pages in your blog in a similar to style to wiki. No 
 
 == Description ==
 
-An easy way to link to other posts and articles in your blog. As well as quickly typing in the link tag there is a tinymce wysiwyg 
-plugin that allows you to search for posts for category.
+An easy way to link to posts and pages in your blog. As well as quickly typing in the link tag there is a tinymce wysiwyg 
+plugin that allows you to search for posts by category.
+
+The shortcode for the plugin within the post gets converted to the current permalink for the post on the render of the page. If you change your link structure later on, you don't have to go back and edit the internal links for your blog!
+
+Using the UI you can search through your blog posts or browse by category and get the shortcode added to the post for you!
 
 I saw a need for this plugin and thought I'd give it a go. If you would like to help improve this plugin please contact me via my blog.
 

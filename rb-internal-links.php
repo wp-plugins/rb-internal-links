@@ -42,6 +42,9 @@
  * Sets up hooks, core methods, etc
  */
 
+if(floatval(phpversion()) < 5)
+	die('You must have PHP version 5+ to use RB Internal Links');
+
 add_action('init', array('Rb_Internal_Links', 'enable'));
 
 class Rb_Internal_Links{
