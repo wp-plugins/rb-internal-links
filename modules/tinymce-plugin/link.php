@@ -15,9 +15,9 @@ else
 	$code .= ' id="' . $linkId . '"';
 	$code .= ' type="' . $linkType . '"';
 	
-	$code .= addCodeAttr('linkClass', $linkClass);
-	$code .= addCodeAttr('linkTarget', $linkTarget);
-	$code .= addCodeAttr('linkAnchor', $linkAnchor);
+	$code .= addCodeAttr('class', $linkClass);
+	$code .= addCodeAttr('target', $linkTarget);
+	$code .= addCodeAttr('anchor', $linkAnchor);
 
 	$code .= ']';
 	$code .= $linkText;
