@@ -78,8 +78,12 @@ class Rb_Internal_Links{
 	 * @return string
 	 */
 	function shortcode($atts, $content=null) {
-		if(!isset($atts['id']) || !isset($atts['type']))
+		if(!isset($atts['id']))
 			throw new Exception('Incorrect shortcode for RB Internal Links');
+			
+		// default type is post
+		if(empty($atts['type']))
+			$atts['type'] = 'post';
 			
 		$prefix = '';
 		$suffix = '';		
