@@ -1,10 +1,10 @@
 === RB Internal Links ===
-Contributors: cohen
-Donate link: http://www.blograndom.com
-Tags: links, posts, slugs, permalinks
+Contributors: rb-cohen
+Donate link: http://www.blograndom.com/
+Tags: links, posts, slugs, permalinks, shortcode
 Requires at least: 2.5
-Tested up to: 2.7
-Stable tag: 0.22
+Tested up to: 2.7.1
+Stable tag: 2.0
 
 Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
 
@@ -25,18 +25,18 @@ I saw a need for this plugin and thought I'd give it a go. If you would like to 
 == Usage ==
 
 For more information visit http://www.blograndom.com/blog/extras/rb-internal-link-plugin/
+And check out the forum for bugs/features: http://www.blograndom.com/links/forum/
 
 To manually link a page:
 
-	At the place you would like the link to appear write ( ignoring the ticks - i.e. ` ):
-		`<!--intlink id="post-slug" text="link text"-->` OR `<!--post id="post-id" text="link text"-->`
+	At the place you would like the link to appear write:
+		`[intlink id="post-slug"]Link text[/intlink]
 	...exchanging post-slug or post-id for the post or page slug/id you would like to link to.
 
 	Note:
-	- text is the text or html you would like to put within the anchor tag and should be ok with anything other than { or ".
 	- you can specify a class for the link using ... `class="my_class"` ...
 	- you can specify a target for the link using ... `target="_new"` ...
-	- you can put html in to the text parameter (e.g. <img src='myimage.gif' />), just don't use " (quote marks) in the html
+	- you can specify an anchor to go to on the new page using ... `anchor="bottom"` ...
 	
 Using the tinymce wysiwyg editor:
 
@@ -49,11 +49,9 @@ Using the tinymce wysiwyg editor:
 	Fill in the optional properties for the link
 	Click "Insert Link"
 	
-== To do ==
-- Made a <!--extlink for items in the blog roll
-- Take changes from the highlighted text in Visual mode and apply them to the link code
-
 == Change Log ==
+v2.0 (22/02/2009)
+- Complete rewrite, a few new features, some removed but same core functionality
 v0.22 (28/12/2008)
 - tinyMCE language file using new format, compatibility with wordpress version 2.7
 v0.15 (27/01/2008)

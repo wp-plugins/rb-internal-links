@@ -1,268 +1,326 @@
 <?php
+
 /*
-Plugin Name: RB Internal Links
-Version: 0.22
-Plugin URI: http://www.blograndom.com/blog/extras/
-Author: Cohen
-Author URI: http://www.blograndom.com/
-Description: Use wiki style tags to link to internal posts and pages within your blog without hardcoding them.
 
-Installation: See readme.
+ RB Internal Links
+ ==============================================================================
+ 
+ Link to your other blog posts without having to use the full url, just in case anything changes later on!
 
+
+ Info for WordPress:
+ ==============================================================================
+ Plugin Name: RB Internal Links
+ Plugin URI: http://www.blograndom.com/blog/
+ Description: Link to other blog posts and pages without specifying the full URL. Uses a UI to ease finding the post or page you want to link to.
+ Version: 2.0
+ Author: Cohen
+ Author URI: http://www.blograndom.com
+
+ Copyright 2009  Cohen (blograndom.com)  (email : info@blograndom.com)
+ ==============================================================================
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-$rbinternal_version = '0.21';
 
-// set up important actions and filters 
-add_filter('the_content', 'rbinternal_parse_content', 1);
-add_filter('the_content_rss', 'rbinternal_parse_content', 1);
-add_filter('the_excerpt', 'rbinternal_parse_content', 1);
-add_action('init', 'rbinternal_init');
-add_action('admin_head', 'rbinternal_admin_header', 10);
-add_action('admin_menu', 'rbinternal_add_pages');
-add_filter('tiny_mce_version', 'rbinternal_refresh_mce'); // update tinymce cache	
+/**
+ * Core class for RB Internal links
+ * 
+ * Sets up hooks, core methods, etc
+ */
 
+add_action('init', array('Rb_Internal_Links', 'enable'));
 
-$rbinternal_url = get_settings('siteurl').'/wp-content/plugins/rb-internal-links/';
-
-function rbinternal_init(){
-
-	global $rbinternal_version;
-	$current_version = get_option('rbinternal_version');
+class Rb_Internal_Links{
 	
-	if($rbinternal_version != $current_version){
-		rbinternal_update($rbinternal_version, $current_version);
-		update_option('rbinternal_version', $rbinternal_version);
+	static $pluginName = 'RB Internal Links';
+	static $optionPrefix = 'rbinternal_';
+	static $options = array('tinymce', 'return_param');
+	static $defaults = array('tinymce' => true, 'return_param' => 'id');
+	static $convert_count = 0;
+	
+	/**
+	 * Enable
+	 * 
+	 * Called when wordpress is initialised, sets up the actions/hooks/shortcode used throughout the system
+	 */
+	function enable()
+	{
+		// add shortcode hook for processing our links
+		add_shortcode('intlink', array(__CLASS__, 'shortcode'));
+		// add link to settings menu for plugin
+		add_action('admin_menu', array(__CLASS__, 'addOptionsPages'));
+		// add tinymce button to wysiwyg editor
+		add_action('admin_init', array(__CLASS__, 'addWysiwygFilters'));
 	}
 	
-
-	rbinternal_addbuttons();
-	
-}
-
-function rbinternal_update($version, $current_version){
-	
-	// set some default options
-	add_option('rbinternal_tinymce', 1);
-	add_option('rbinternal_post_orderby', 'post_date');
-	add_option('rbinternal_post_sort', 'DESC');
-	add_option('rbinternal_page_orderby', 'post_title');
-	add_option('rbinternal_page_sort', 'ASC');
-	add_option('rbinternal_return_par	am', 'ID');
-		
-}
-
-function rbinternal_refresh_mce($ver) {
-  $ver += 36;
-  return $ver;
-}
-
-// this function gets the url based on post id or slug
-function rbinternal_get_url($id, &$text, $type) {
-	global $wpdb;
-	
-	if(empty($id)) return false;
-	
-	switch($type){
-		case 'post':
-			$field = (is_numeric($id))? 'ID' : 'post_name';
-			$post = $wpdb->get_row("SELECT ID, post_title FROM $wpdb->posts WHERE $field = '$id'");
-			if(empty($post->post_title)) return false;
-			elseif(empty($text)) $text = $post->post_title;
+	/**
+	 * Shortcode
+	 * 
+	 * The shortcode parser that replaces the shortcode in the blog post with a link to 
+	 * a post
+	 * 
+	 * @param array		$atts
+	 * @param string	$content
+	 * @return string
+	 */
+	function shortcode($atts, $content=null) {
+		if(!isset($atts['id']) || !isset($atts['type']))
+			throw new Exception('Incorrect shortcode for RB Internal Links');
 			
-			return get_permalink($post->ID);
-		case 'category':
-			return get_category_link($id);
-		default:
-			return false;
-	}
-	
-}
-
-// posts and content get sent to this function which will look for our bbcode
-function rbinternal_parse_content($content) {
-
-	if(strpos($content, "{{post") !== FALSE OR strpos($content, "<!--intlink") !== FALSE)
-		$content = preg_replace("/({{|<!--)(post|intlink)([^}}].*?|[^-->].*?)(}}|-->)/ei", "rbinternal_parse_params('\\2', '\\3')", $content);
-		// {{ * }} for backwards compatibility
+		$prefix = '';
+		$suffix = '';		
 		
-	return $content;
-	
-}
-
-function rbinternal_parse_params($verb, $paramStr){
-
-		$paramStr = stripslashes($paramStr);
-  	$paramStr = str_replace('&quot;', '"', $paramStr);
-  	$paramStr = str_replace("&#8221;", '"', $paramStr);
+		$params = $atts;
+		$prefix .= '<a' . self::shortcode_attr('href', self::url($params['id'], $params['type']) . ((isset($params['anchor']))? '#' . $params['anchor'] : ''));
+		unset($params['id'], $params['type'], $params['anchor']);
 		
-		preg_match_all("/(\w+)\=\"([^\"].*?)\"/i", $paramStr, $matches);
+		foreach($params AS $attr => $value)
+			$prefix .= self::shortcode_attr($attr, $value);
 		
-		if(is_array($matches[1]) AND is_array($matches[2]))
-			foreach($matches[1] AS $i=>$key)
-				$params[$key] = isset($matches[2][$i])? $matches[2][$i] : false;
+		$prefix .= '>';
 		
-		return rbinternal_render_content($verb, $params);
-
-}
-
-function rbinternal_render_content($verb, $params){
-	
-	if(!isset($params['type'])) $params['type'] = 'post';
-	
-	switch($verb){
-		case 'intlink':
-		case 'post': //backwards compatibility
-			if(!isset($params['id'])) return false;
-			if(!isset($params['text'])) $params['text'] = 0;
-			$html = '<a href="'. rbinternal_get_url($params['id'], $params['text'], $params['type']) . ((isset($params['anchor']))? '#' . $params['anchor'] : '') . '" '; 
-			if(isset($params['class'])) $html .= 'class="'. $params['class'] . '" ';
-			if(isset($params['target'])) $html .= 'target="'. $params['target'] . '" '; 
-			$html .= '>'. $params['text'] .'</a>';
+		$suffix .= '</a>';
 			
-			return $html;
-		default:
-			return '[rbinternal code not found]';
-	}
-}
-
-
-// tinyMCE functions
-function rbinternal_addbuttons() {        
-	// Check that the editor is turned on
-	if(get_option('rbinternal_tinymce') == 1 && current_user_can('edit_posts') && get_user_option('rich_editing') == 'true'){
-	 
-		add_filter("mce_external_plugins", "rbinternal_external_plugins");
-	  add_filter('mce_buttons', 'rbinternal_mce_buttons');
-	  add_filter("mce_css", "rbinternal_mce_css");
-	  
-	}
-}
-
-// Load the TinyMCE plugin : editor_plugin.js (wp2.5)
-function rbinternal_external_plugins($plugin_array) {
-	global $rbinternal_url;
-  $plugin_array['rbinternallinks'] = $rbinternal_url.'tmce/rb-internal-links/editor_plugin_25.js';
-  return $plugin_array;
-}
-// 2.5 + pre 2.5 button load
-function rbinternal_mce_buttons($buttons) {
-	array_push($buttons, "separator", "rbinternallinks");
-	return $buttons;
-}
-// 2.5 + mce css load
-function rbinternal_mce_css($css){
-	global $rbinternal_url;
-	return $css . ',' . $rbinternal_url.'styles.css';
-}
-
-
-
-function rbinternal_admin_header(){
-	global $rbinternal_url;
-	echo '<script language="JavaScript" type="text/javascript">' . "\n" . '// <![CDATA[ ' . "\n";
-	echo 'var rbinternal_url="'. $rbinternal_url .'";' . "\n";
-	echo '// ]]>' . "\n" . '</script>';
-}
-
-function rbinternal_add_pages(){
-	add_options_page('RB Internal Links', 'RB Internal Links', 8, __FILE__, 'rbinternal_admin_page');
-}
-
-function rbinternal_admin_page(){
-
-	if( $_POST['rbinternal_submit'] == 'Y' ) {
-    // Read their posted value
-		$rbinternal_tinymce = isset($_REQUEST['rbinternal_tinymce'])? $_REQUEST['rbinternal_tinymce'] : 0;
-    $rbinternal_post_orderby = $_REQUEST['rbinternal_post_orderby'];
-    $rbinternal_post_sort = $_REQUEST['rbinternal_post_sort'];
-    $rbinternal_page_orderby = $_REQUEST['rbinternal_page_orderby'];
- 		$rbinternal_page_sort = $_REQUEST['rbinternal_page_sort'];
-		$rbinternal_return_param = $_REQUEST['rbinternal_return_param'];
 		
-		// Save the posted value in the database
-    update_option('rbinternal_tinymce', $rbinternal_tinymce);
-    update_option('rbinternal_post_orderby', $rbinternal_post_orderby);
-    update_option('rbinternal_post_sort', $rbinternal_post_sort);
-    update_option('rbinternal_page_orderby', $rbinternal_page_orderby);
-    update_option('rbinternal_page_sort', $rbinternal_page_sort);
-		update_option('rbinternal_return_param', $rbinternal_return_param);
-
-    // Put an options updated message on the screen
-?>
-<div class="updated"><p><strong>Settings updated.</strong></p></div>
-<?php
-    }else{
-      $rbinternal_tinymce = get_option('rbinternal_tinymce');
-      $rbinternal_post_orderby = get_option('rbinternal_post_orderby');
-      $rbinternal_post_sort = get_option('rbinternal_post_sort');
-      $rbinternal_page_orderby = get_option('rbinternal_page_orderby');
- 			$rbinternal_page_sort = get_option('rbinternal_page_sort');
-			$rbinternal_return_param = get_option('rbinternal_return_param');
+		return $prefix . $content . $suffix;
 	}
-?>
+	
+	/**
+	 * Shortcode_attr
+	 * 
+	 * Quick little function to correctly parse any attributes we want to create ready 
+	 * for the shortcode return
+	 * 
+	 * @param string	$attr	The attribute key
+	 * @param string	$value	The value to put within quote marks (also gets escaped)
+	 */
+	function shortcode_attr($attr, $value)
+	{
+		return ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+	}
+	
+	/**
+	 * Url
+	 * 
+	 * Generates the correct URL based on the ID and type of URL we want
+	 * If the content variable is empty it may be replaced with the elements title (i.e. post title)
+	 * 
+	 * @param int		$id
+	 * @param string	$type
+	 * @return string	The url
+	 */
+	function url($id, $type = 'post', &$content = null)
+	{
+		switch($type){
+			case 'post':
+			case 'page':
+				global $wpdb;
+				$field = (is_numeric($id))? 'ID' : 'post_name';
+				$post = $wpdb->get_row("SELECT ID, post_title FROM $wpdb->posts WHERE $field = '$id'");
+				if(empty($post))
+					return '#';
+				elseif(empty($content))
+					$content = $post->post_title;
 
-<div class="wrap">
-<h2>RB Internal Link Settings</h2>
-<form name="form1" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>">
-<input type="hidden" name="rbinternal_submit" value="Y">
+				return get_permalink($post->ID);
+			case 'category':
+				if(empty($content))
+					$content = get_cat_name($id);
+				return get_category_link($id);
+			default:
+				return '#';
+		}
+	}
+	
+	function saveOption($key, $value)
+	{
+		$thisKey = self::$optionPrefix . $key;
+		if(get_option($thisKey) === false)
+			add_option($thisKey, $value);
+		else
+			update_option($thisKey, $value);
+	}
+	
+	function loadOption($key)
+	{
+		$option = get_option(self::$optionPrefix . $key);
+		if($option === false)
+			$option = ((isset(self::$defaults[$key]))? self::$defaults[$key] : false);
+		
+		return $option;
+	}
+	
+	function loadOptions()
+	{
+		$options = array();
+		foreach(self::$options AS $key)
+			$options[$key] = self::loadOption($key);
+		return $options;
+	}
+	
+	/**
+	 * Add page to admin panel menu
+	 */
+	function addOptionsPages()
+	{
+		add_options_page(self::$pluginName, self::$pluginName, 8, __FILE__, array(__CLASS__, 'adminSettings'));
+	}
+	
+	/**
+	 * Renders the settings page in the admin panel
+	 */
+	function adminSettings()
+	{
+		if(isset($_POST['rbinternal_submit']))
+		{				
+			$tinymce = (isset($_POST['tinymce']))? $_POST['tinymce'] : '0';
+			$return_param = (isset($_POST['return_param']))? $_POST['return_param'] : 'id';
+						
+			self::saveOption('tinymce', $tinymce);
+			self::saveOption('return_param', $return_param);
+			
+			$updateSuccess = true;
+		}
+		
+		if(isset($_POST['rbinternal_update_code']))
+		{
+			try{
+				self::updateOldCode();
+				$codeUpdateSuccess = self::$convert_count;
+			}catch(Exception $e)
+			{
+				die($e);
+			}
+		}
+		
+		$options = self::loadOptions();
+		include_once(dirname(__FILE__) . '/templates/admin-settings.php');
+	}
+	
+	/**
+	 * Sets up the filters that will get called if we're editing a post or a page
+	 */
+	function addWysiwygFilters()
+	{
+		if(self::loadOption('tinymce')){
+			// Don't bother doing this stuff if the current user lacks permissions
+			if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') )
+			return;
 
-<h3>General</h3>
-<ul>
-<li><input type="checkbox" name="rbinternal_tinymce" value="1" <?php if($rbinternal_tinymce == 1) echo 'checked="checked"'; ?>> Enable wysiwyg editor plugin.</li>
-<li>
-	Return the 
-	<select name="rbinternal_return_param">
-	<option value="ID" <?php if($rbinternal_return_param == 'ID') echo 'selected="selected"'; ?>>article ID</option>
-	<option value="slug" <?php if($rbinternal_return_param == 'slug') echo 'selected="selected"'; ?>>article slug</option>
-	</select>
-	to the editor
-</li>
-<li>
-	Order the list of posts by 
-	<select name="rbinternal_post_orderby">
-	<option value="post_date" <?php if($rbinternal_post_orderby == 'post_date') echo 'selected="selected"'; ?>>Post Date</option>
-	<option value="post_title" <?php if($rbinternal_post_orderby == 'post_title') echo 'selected="selected"'; ?>>Post Title</option>
-	<option value="post_modified" <?php if($rbinternal_post_orderby == 'post_modified') echo 'selected="selected"'; ?>>Modified Date</option>
-	<option value="ID" <?php if($rbinternal_post_orderby == 'ID') echo 'selected="selected"'; ?>>Post ID</option>
-	<option value="post_author" <?php if($rbinternal_post_orderby == 'post_author') echo 'selected="selected"'; ?>>Post Author</option>
-	<option value="post_name" <?php if($rbinternal_post_orderby == 'post_name') echo 'selected="selected"'; ?>>Post Slug</option>
-	</select> 
-	and sort 
-	<select name="rbinternal_post_sort">
-	<option value="ASC" <?php if($rbinternal_post_sort == 'ASC') echo 'selected="selected"'; ?>>Ascending</option>
-	<option value="DESC" <?php if($rbinternal_post_sort == 'DESC') echo 'selected="selected"'; ?>>Descending</option>
-	</select>
-</li>
-<li>
-	Order the list of pages by 
-	<select name="rbinternal_page_orderby">
-	<option value="post_date" <?php if($rbinternal_page_orderby == 'post_date') echo 'selected="selected"'; ?>>Post Date</option>
-	<option value="post_title" <?php if($rbinternal_page_orderby == 'post_title') echo 'selected="selected"'; ?>>Post Title</option>
-	<option value="post_modified" <?php if($rbinternal_page_orderby == 'post_modified') echo 'selected="selected"'; ?>>Modified Date</option>
-	<option value="ID" <?php if($rbinternal_page_orderby == 'ID') echo 'selected="selected"'; ?>>Post ID</option>
-	<option value="post_author" <?php if($rbinternal_page_orderby == 'post_author') echo 'selected="selected"'; ?>>Post Author</option>
-	<option value="post_name" <?php if($rbinternal_page_orderby == 'post_name') echo 'selected="selected"'; ?>>Post Slug</option>
-	</select> 
-	and sort 
-	<select name="rbinternal_page_sort">
-	<option value="ASC" <?php if($rbinternal_page_sort == 'ASC') echo 'selected="selected"'; ?>>Ascending</option>
-	<option value="DESC" <?php if($rbinternal_page_sort == 'DESC') echo 'selected="selected"'; ?>>Descending</option>
-	</select>
-</li>
-</ul>
-
-<p class="submit">
-<input type="submit" name="Submit" value="Update Options" />
-</p>
-
-<h2>Debug:</h2>
-<p>DB Version: <?php global $wp_db_version; echo $wp_db_version; ?></p>
-<p>Rich Editing Enabled: <?php if ('true' == get_user_option('rich_editing')) echo 'Yes'; else echo 'No'; ?></p>
-<p>Plugin wysiwyg enabled: <?php if (get_option('rbinternal_tinymce') == 1) echo 'Yes'; else echo 'No'; ?></p>
-
-</form>
-</div>
-<?php
+			// Add only in Rich Editor mode
+			if (get_user_option('rich_editing') == 'true')
+			{
+				add_filter('mce_external_plugins', array(__CLASS__, 'wysiwygPluginAdd'));
+				add_filter('mce_buttons', array(__CLASS__, 'wysiwygButtonAdd'));
+				add_filter('mce_css', array(__CLASS__, 'wysiwygCssAdd'));
+				add_filter('tiny_mce_version', array(__CLASS__, 'wysiwygRefresh'));
+			}
+		}
+	}
+	
+	/**
+	 * Increment tinymce version number for cache of config
+	 */
+	function wysiwygRefresh($ver) {
+		$ver += 36;
+		return $ver;
+	}
+	
+	/**
+	 * Adds the tinymce plugin to the list of available plugins
+	 */
+	function wysiwygPluginAdd($plugin_array)
+	{
+		$plugin_array['rbinternallinks'] = self::getPluginUrl() . '/tinymce/editor_plugin.js';
+		return $plugin_array;
+	}
+	
+	/**
+	 * Adds the tinymce plugin to the list of available plugins
+	 */
+	function wysiwygCssAdd($css){
+		return $css . ',' . self::getPluginUrl() . '/tinymce/styles.css';
+	}
+	
+	/**
+	 * Add the button to tinymce
+	 */
+	function wysiwygButtonAdd($buttons) {
+		array_push($buttons, 'separator', 'rbinternallinks');
+		return $buttons;
+	}
+	
+	function getPluginUrl()
+	{
+		return site_url('wp-content/plugins/' . basename(dirname(__FILE__)));
+	}
+	
+	function getCurrentPage() {
+		$page = basename(__FILE__);
+		if(isset($_GET['page']) && !empty($_GET['page'])) {
+			$page = preg_replace('[^a-zA-Z0-9\.\_\-]','',$_GET['page']);
+		}
+		
+		if(function_exists("admin_url")) return admin_url(basename($_SERVER["PHP_SELF"])) . "?page=" .  $page;
+		else return $_SERVER['PHP_SELF'] . "?page=" .  $page;
+	}
+	
+	function updateOldCode()
+	{
+		$posts = get_posts(array('numberposts' => -1));
+		foreach($posts AS $item)
+		{
+			$content = preg_replace_callback("/<!--(post|intlink)([^-->].*?)-->/i", array(__CLASS__, 'processOldCode'), $item->post_content);
+			$update = array('ID' => $item->ID, 'post_content' => $content);
+			wp_update_post($update);
+		}
+		
+		$pages = get_pages();
+		foreach($pages AS $item)
+		{
+			$content = preg_replace_callback("/<!--(post|intlink)([^-->].*?)-->/i", array(__CLASS__, 'processOldCode'), $item->post_content);
+			$update = array('ID' => $item->ID, 'post_content' => $content);
+			wp_update_post($update);
+		}
+	}
+	
+	function processOldCode($code)
+	{
+		$params = isset($code[2])? $code[2] : false;
+		if(!$params) return false;
+		
+		self::$convert_count++;
+		
+		// covert escaped double quotes to avoid confusion
+		$params = str_replace('\"', '!!DBLQUOTES!!', $params);
+		
+		// look for the text attribute
+		preg_match("/text=\"([^\"].*?)\"/i", $params, $matches);
+		$find = $matches[0];
+		$text = $matches[1];
+		// replace escaped quotes with normal quotes
+		$text = str_replace('!!DBLQUOTES!!', '"', $text);
+		
+		$params = trim(str_replace($find, '', $params));
+		
+		// build new code
+		$new = '[intlink ' . $params . ']' . $text . '[/intlink]';
+		// convert back any other double quotes
+		$new = str_replace('!!DBLQUOTES!!', '\"', $new);
+		return $new;
+	}
 }
-?>
