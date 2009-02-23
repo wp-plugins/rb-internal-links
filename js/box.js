@@ -14,7 +14,7 @@ function box()
 		else
 			offset = (this.id - box_display + 1) * width;
 			
-		jQuery('#boxes').animate({marginLeft: -offset}, 1500); //.css('margin-left', -offset);	
+		jQuery('#boxes').animate({marginLeft: -offset}, 1000); //.css('margin-left', -offset);	
 	}
 	
 	this.content = function(content)
@@ -41,7 +41,7 @@ function moveBoxes(amount)
 	var newMargin = currentMargin - (width * amount);
 
 	if(newMargin <= 0 && newMargin >= maxMargin)
-		boxes.animate({marginLeft: newMargin}, 1500);
+		boxes.animate({marginLeft: newMargin}, 1000);
 }
 
 function itemClick(level, item)

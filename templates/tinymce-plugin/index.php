@@ -113,14 +113,10 @@
 			border: 0;
 		}
 		label{
-			position: relative;
-			float: left;
 			margin: 0 0 2px 0;
 			padding: 0;
 		}
 		input, select{
-			position: relative;
-			float: left;
 			clear: left;
 			width: 100%;
 		}
@@ -208,8 +204,6 @@
 		{
 			data = jQuery(form).serialize();
 			jQuery.getJSON('tinymce-plugin.php', 'action=link&' + data, function(result){
-				console.log(result);
-			
 				if(result.status == 'error')
 					jQuery('#formErrors').text(result.message);
 				else
