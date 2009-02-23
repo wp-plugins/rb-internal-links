@@ -8,6 +8,7 @@
 			margin: 0;
 			padding: 0;
 			border: 0;
+			width: 710px;
 			font-family: arial, tahoma, verdana;
 			font-size: 12px;
 		}
@@ -21,8 +22,9 @@
 			color: #00457A;
 		}
 		#container{
-			position: relative;
-			float: left;
+			position: absolute;
+			top: 0;
+			left: 25px;
 			width: 650px;
 			height: 300px;
 			overflow: hidden;
@@ -45,9 +47,11 @@
 			border-right: 0px;
 		}
 		.arrow{
+			position: absolute;
+			left: 0;
+			top: 0;
 			height: 300px;
 			width: 25px;
-			float: left;
 			background-color: #003366;
 			color: #ffffff;
 			font-size: 20px;
@@ -56,7 +60,7 @@
 			cursor: pointer;
 		}
 		.right{
-			float: right;
+			left: 695px;
 		}
 		
 		ul.box-list{
@@ -88,7 +92,7 @@
 		}
 		table.details{
 			font-size: 12px;
-			width: 100%;
+			width: 180px;
 			text-align: left;
 			margin: 0 0 10px 0;
 			padding: 0;
@@ -144,6 +148,7 @@
 			loadStart();
 			// remove the tinymce plugin css
 			var allLinks = document.getElementsByTagName("link");
+			allLinks[allLinks.length-1].parentNode.removeChild(allLinks[allLinks.length-1]);
 			allLinks[allLinks.length-1].parentNode.removeChild(allLinks[allLinks.length-1]);
 		});
 		

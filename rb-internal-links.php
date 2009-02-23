@@ -230,7 +230,6 @@ class Rb_Internal_Links{
 			{
 				add_filter('mce_external_plugins', array(__CLASS__, 'wysiwygPluginAdd'));
 				add_filter('mce_buttons', array(__CLASS__, 'wysiwygButtonAdd'));
-				add_filter('mce_css', array(__CLASS__, 'wysiwygCssAdd'));
 				add_filter('tiny_mce_version', array(__CLASS__, 'wysiwygRefresh'));
 			}
 		}
@@ -240,7 +239,7 @@ class Rb_Internal_Links{
 	 * Increment tinymce version number for cache of config
 	 */
 	function wysiwygRefresh($ver) {
-		$ver += 36;
+		$ver += 3;
 		return $ver;
 	}
 	
@@ -251,13 +250,6 @@ class Rb_Internal_Links{
 	{
 		$plugin_array['rbinternallinks'] = self::getPluginUrl() . '/tinymce/editor_plugin.js';
 		return $plugin_array;
-	}
-	
-	/**
-	 * Adds the tinymce plugin to the list of available plugins
-	 */
-	function wysiwygCssAdd($css){
-		return $css . ',' . self::getPluginUrl() . '/tinymce/styles.css';
 	}
 	
 	/**
