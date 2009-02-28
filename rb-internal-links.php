@@ -45,7 +45,10 @@
 if(floatval(phpversion()) < 5)
 	die('You must have PHP version 5+ to use RB Internal Links');
 
+// start plugin
 add_action('init', array('Rb_Internal_Links', 'enable'));
+// add tinymce button to wysiwyg editor
+add_action('init', array('Rb_Internal_Links', 'addWysiwygFilters'));
 
 class Rb_Internal_Links{
 	
@@ -66,8 +69,6 @@ class Rb_Internal_Links{
 		add_shortcode('intlink', array(__CLASS__, 'shortcode'));
 		// add link to settings menu for plugin
 		add_action('admin_menu', array(__CLASS__, 'addOptionsPages'));
-		// add tinymce button to wysiwyg editor
-		add_action('admin_init', array(__CLASS__, 'addWysiwygFilters'));
 	}
 	
 	/**
