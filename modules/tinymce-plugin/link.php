@@ -20,8 +20,12 @@ else
 	$code .= addCodeAttr('anchor', $linkAnchor);
 
 	$code .= ']';
-	$code .= $linkText;
-	$code .= '[/intlink]';
+	
+	if(!empty($linkText))
+	{
+		$code .= $linkText;
+		$code .= '[/intlink]';
+	}
 	
 	$return = array('status' => 'success', 'code' => $code);
 }
