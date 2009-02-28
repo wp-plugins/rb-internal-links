@@ -93,13 +93,18 @@ class Rb_Internal_Links{
 		$suffix = '';		
 		
 		$params = $atts;
-		$prefix .= '<a' . self::shortcode_attr('href', self::url($params['id'], $params['type']) . ((isset($params['anchor']))? '#' . $params['anchor'] : ''));
+		$url = self::url($params['id'], $params['type']) . ((isset($params['anchor']))? '#' . $params['anchor'] : '');
+		
+		$prefix .= '<a' . self::shortcode_attr('href', $url);
 		unset($params['id'], $params['type'], $params['anchor']);
 		
 		foreach($params AS $attr => $value)
 			$prefix .= self::shortcode_attr($attr, $value);
 		
 		$prefix .= '>';
+		
+		if($content === null)
+			$content = $url;
 		
 		$suffix .= '</a>';
 			
