@@ -105,6 +105,8 @@ class Rb_Internal_Links{
 		
 		if($content === null)
 			$content = $url;
+		else
+			$content = do_shortcode($content);
 		
 		$suffix .= '</a>';
 			
