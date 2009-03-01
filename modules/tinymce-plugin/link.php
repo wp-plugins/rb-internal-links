@@ -19,6 +19,7 @@ else
 	$code .= addCodeAttr('target', $linkTarget);
 	$code .= addCodeAttr('anchor', $linkAnchor);
 
+	$code .= empty($linkText)? ' /' : '';
 	$code .= ']';
 	
 	if(!empty($linkText))

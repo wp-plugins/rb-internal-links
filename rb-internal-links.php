@@ -54,8 +54,8 @@ class Rb_Internal_Links{
 	
 	static $pluginName = 'RB Internal Links';
 	static $optionPrefix = 'rbinternal_';
-	static $options = array('tinymce', 'return_param');
-	static $defaults = array('tinymce' => true, 'return_param' => 'id');
+	static $options = array('tinymce', 'return_param', 'default_text', 'code_prefix', 'code_suffix');
+	static $defaults = array('tinymce' => true, 'return_param' => 'id', 'default_text' => 'url');
 	static $convert_count = 0;
 	
 	/**
@@ -89,11 +89,11 @@ class Rb_Internal_Links{
 		if(empty($atts['type']))
 			$atts['type'] = 'post';
 			
-		$prefix = '';
-		$suffix = '';		
+		$prefix = self::loadOption('code_prefix');
+		$suffix = self::loadOption('code_suffix');
 		
 		$params = $atts;
-		$url = self::url($params['id'], $params['type']) . ((isset($params['anchor']))? '#' . $params['anchor'] : '');
+		$url = self::url($params['id'], $params['type'], $content) . ((isset($params['anchor']))? '#' . $params['anchor'] : '');
 		
 		$prefix .= '<a' . self::shortcode_attr('href', $url);
 		unset($params['id'], $params['type'], $params['anchor']);
@@ -103,10 +103,7 @@ class Rb_Internal_Links{
 		
 		$prefix .= '>';
 		
-		if($content === null)
-			$content = $url;
-		else
-			$content = do_shortcode($content);
+		$content = do_shortcode($content);
 		
 		$suffix .= '</a>';
 			
@@ -148,17 +145,50 @@ class Rb_Internal_Links{
 				$post = $wpdb->get_row("SELECT ID, post_title FROM $wpdb->posts WHERE $field = '$id'");
 				if(empty($post))
 					return '#';
-				elseif(empty($content))
-					$content = $post->post_title;
-
-				return get_permalink($post->ID);
+				else
+				{
+					$url = get_permalink($post->ID);
+					if(empty($content))
+						$content = self::title($id, $type, $post, $url);
+					return $url;
+				}				
 			case 'category':
+				$url = get_category_link($id);
 				if(empty($content))
-					$content = get_cat_name($id);
-				return get_category_link($id);
+					$content = self::title($id, $type, null, $url);
+				return $url;
 			default:
 				return '#';
 		}
+	}
+	
+	/**
+	 * Title
+	 * 
+	 * Finds the title of the post/page/category for the link
+	 * 
+	 * @param int		$id
+	 * @param string	$type
+	 * @return string	The url
+	 */
+	function title($id, $type = 'post', $data = null, $url = null)
+	{
+		switch(self::loadOption('default_text'))
+		{
+			case 'title':
+				switch($type){
+					case 'post':
+					case 'page':
+						return $data->post_title;
+					case 'category':
+						return get_cat_name($id);
+					default:
+						return '#';
+				}
+			default:
+				return $url;			
+		}
+		
 	}
 	
 	function saveOption($key, $value)
@@ -204,9 +234,15 @@ class Rb_Internal_Links{
 		{				
 			$tinymce = (isset($_POST['tinymce']))? $_POST['tinymce'] : '0';
 			$return_param = (isset($_POST['return_param']))? $_POST['return_param'] : 'id';
+			$default_text = (isset($_POST['default_text']))? $_POST['default_text'] : 'url';
+			$code_prefix = (isset($_POST['code_prefix']))? $_POST['code_prefix'] : '';
+			$code_suffix = (isset($_POST['code_suffix']))? $_POST['code_suffix'] : '';
 						
 			self::saveOption('tinymce', $tinymce);
 			self::saveOption('return_param', $return_param);
+			self::saveOption('default_text', $default_text);
+			self::saveOption('code_prefix', $code_prefix);
+			self::saveOption('code_suffix', $code_suffix);
 			
 			$updateSuccess = true;
 		}
@@ -329,7 +365,7 @@ class Rb_Internal_Links{
 		$params = trim(str_replace($find, '', $params));
 		
 		// build new code
-		$new = '[intlink ' . $params . ']' . ((!empty($text))? $text . '[/intlink]' : '');
+		$new = '[intlink ' . $params . ((empty($text))? ' /' : '') . ']' . ((!empty($text))? $text . '[/intlink]' : '');
 		// convert back any other double quotes
 		$new = str_replace('!!DBLQUOTES!!', '\"', $new);
 		return $new;
