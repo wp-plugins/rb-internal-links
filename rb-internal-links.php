@@ -290,6 +290,9 @@ class Rb_Internal_Links{
 		foreach($posts AS $item)
 		{
 			$content = preg_replace_callback("/<!--(post|intlink)([^-->].*?)-->/i", array(__CLASS__, 'processOldCode'), $item->post_content);
+			// old code method too
+			$content = preg_replace_callback("/{{(post|intlink)([^}}].*?)}}/i", array(__CLASS__, 'processOldCode'), $content);
+			// update database
 			$update = array('ID' => $item->ID, 'post_content' => $content);
 			wp_update_post($update);
 		}
@@ -298,6 +301,7 @@ class Rb_Internal_Links{
 		foreach($pages AS $item)
 		{
 			$content = preg_replace_callback("/<!--(post|intlink)([^-->].*?)-->/i", array(__CLASS__, 'processOldCode'), $item->post_content);
+			$content = preg_replace_callback("/{{(post|intlink)([^}}].*?)}}/i", array(__CLASS__, 'processOldCode'), $content);
 			$update = array('ID' => $item->ID, 'post_content' => $content);
 			wp_update_post($update);
 		}
