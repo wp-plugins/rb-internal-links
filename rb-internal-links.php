@@ -327,7 +327,7 @@ class Rb_Internal_Links{
 		$params = trim(str_replace($find, '', $params));
 		
 		// build new code
-		$new = '[intlink ' . $params . ']' . $text . '[/intlink]';
+		$new = '[intlink ' . $params . ']' . ((!empty($text))? $text . '[/intlink]' : '');
 		// convert back any other double quotes
 		$new = str_replace('!!DBLQUOTES!!', '\"', $new);
 		return $new;
