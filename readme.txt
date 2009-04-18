@@ -1,10 +1,10 @@
 === RB Internal Links ===
-Contributors: rb-cohen
+Contributors: Arron Woods
 Donate link: http://www.blograndom.com/
 Tags: links, posts, slugs, permalinks, shortcode
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 
 Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
 
@@ -54,6 +54,8 @@ Using the tinymce wysiwyg editor:
 	Click "Insert Link"
 	
 == Change Log ==
+v2.0.5 (19/04/2009)
+- compat.php file with json_encode function for PHP versions < 5.2
 v2.0 (22/02/2009)
 - Complete rewrite, a few new features, some removed but same core functionality
 v0.22 (28/12/2008)

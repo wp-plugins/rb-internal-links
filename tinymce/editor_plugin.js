@@ -1,7 +1,4 @@
 (function() {
-	// Load plugin specific language pack
-	//tinymce.PluginManager.requireLangPack('example');
-
 	tinymce.create('tinymce.plugins.rbinternallinks', {
 		/**
 		 * Initializes the plugin, this will be executed after the plugin has been created.
@@ -31,22 +28,6 @@
 				image : url + '/../images/icon.gif'
 			});
 
-			// Add a node change handler, selects the button in the UI when a image is selected
-			ed.onNodeChange.add(function(ed, cm, n) {
-				//cm.setActive('example', n.nodeName == 'IMG');
-			});
-			
-			// Replace morebreak with images
-			ed.onBeforeSetContent.add(function(ed, o) {
-				// used to have code for hiding int link code
-			});
-
-			// Replace images with morebreak
-			ed.onPostProcess.add(function(ed, o) {
-				if (o.get){
-					// used to have code for showing int link code
-				}
-			});
 		},
 
 		/**

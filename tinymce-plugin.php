@@ -2,8 +2,10 @@
 
 require('../../../wp-config.php');
 $path = dirname(__FILE__);
-$content = addslashes(request('content'));
 
+require($path . '/compat.php');
+
+$content = addslashes(request('content'));
 $action = request('action');
 switch($action)
 {
