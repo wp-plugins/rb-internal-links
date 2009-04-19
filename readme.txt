@@ -57,15 +57,20 @@ Using the tinymce wysiwyg editor:
 v2.0.5 (19/04/2009)
 - compat.php file with json_encode function for PHP versions < 5.2
 - Cursor and foreground change to notify user that next section is loading
+
 v2.0 (22/02/2009)
 - Complete rewrite, a few new features, some removed but same core functionality
+
 v0.22 (28/12/2008)
 - tinyMCE language file using new format, compatibility with wordpress version 2.7
+
 v0.15 (27/01/2008)
 - Fixed bug with visual mode insertion hiding newly inserted link
 - Added anchor parameter for linking to anchors within pages
+
 v0.14 (19/12/2007)
 - Changed CDATA comment tags from /* */ to //, which should resolve issues with the tinymce icon
+
 v0.13 (23/10/2007)
 - Changed charset to utf-8 for tinymce plugin (thanks to vanco)
 - Put in option for ID or slug returned to editor, default to be ID (good idea, thanks again vanco)
