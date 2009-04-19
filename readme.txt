@@ -11,18 +11,13 @@ Link to posts and pages within your blog using shortcodes, similar to a wiki or 
 == Description ==
 
 An easy way to link to posts and pages in your blog. As well as quickly typing in the link tag there is a tinymce wysiwyg 
-plugin that allows you to browse for posts by category or using search.
+plugin that allows you to search for posts by category.
 
-The shortcode for the link within the post gets converted to the current permalink for the post on the render of the page. If you change your link structure later on, you don't have to go back and edit the internal links for your blog!
+The shortcode for the plugin within the post gets converted to the current permalink for the post on the render of the page. If you change your link structure later on, you don't have to go back and edit the internal links for your blog!
 
-Using the wysiwyg user interface (UI) you can search through your blog posts or browse by category and get the shortcode added to the post for you!
+Using the UI you can search through your blog posts or browse by category and get the shortcode added to the post for you!
 
-I saw a need for this plugin and thought I'd give it a go. If you would like to help improve this plugin please contact me.
-
-== Requirements ==
-
-PHP 5+
-Wordpress 2.5+
+I saw a need for this plugin and thought I'd give it a go. If you would like to help improve this plugin please contact me via my blog.
 
 == Installation ==
 
@@ -62,15 +57,20 @@ Using the tinymce wysiwyg editor:
 v2.0.5 (19/04/2009)
 - compat.php file with json_encode function for PHP versions < 5.2
 - Cursor and foreground change to notify user that next section is loading
+
 v2.0 (22/02/2009)
 - Complete rewrite, a few new features, some removed but same core functionality
+
 v0.22 (28/12/2008)
 - tinyMCE language file using new format, compatibility with wordpress version 2.7
+
 v0.15 (27/01/2008)
 - Fixed bug with visual mode insertion hiding newly inserted link
 - Added anchor parameter for linking to anchors within pages
+
 v0.14 (19/12/2007)
 - Changed CDATA comment tags from /* */ to //, which should resolve issues with the tinymce icon
+
 v0.13 (23/10/2007)
 - Changed charset to utf-8 for tinymce plugin (thanks to vanco)
 - Put in option for ID or slug returned to editor, default to be ID (good idea, thanks again vanco)
