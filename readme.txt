@@ -6,18 +6,23 @@ Requires at least: 2.5
 Tested up to: 2.7.1
 Stable tag: 2.0.5
 
-Link to internal posts and pages in your blog in a similar to style to wiki. No need to remember full URLs, post ids or slugs. Wysiwyg plugin to help find previous posts and pages. 
+Link to posts and pages within your blog using shortcodes, similar to a wiki or cms. No need to remember full URLs, post ids or slugs with the wysiwyg UI plugin to help find previous posts and pages.
 
 == Description ==
 
 An easy way to link to posts and pages in your blog. As well as quickly typing in the link tag there is a tinymce wysiwyg 
-plugin that allows you to search for posts by category.
+plugin that allows you to browse for posts by category or using search.
 
-The shortcode for the plugin within the post gets converted to the current permalink for the post on the render of the page. If you change your link structure later on, you don't have to go back and edit the internal links for your blog!
+The shortcode for the link within the post gets converted to the current permalink for the post on the render of the page. If you change your link structure later on, you don't have to go back and edit the internal links for your blog!
 
-Using the UI you can search through your blog posts or browse by category and get the shortcode added to the post for you!
+Using the wysiwyg user interface (UI) you can search through your blog posts or browse by category and get the shortcode added to the post for you!
 
-I saw a need for this plugin and thought I'd give it a go. If you would like to help improve this plugin please contact me via my blog.
+I saw a need for this plugin and thought I'd give it a go. If you would like to help improve this plugin please contact me.
+
+== Requirements ==
+
+PHP 5+
+Wordpress 2.5+
 
 == Installation ==
 
