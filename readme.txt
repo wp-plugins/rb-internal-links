@@ -56,6 +56,7 @@ Using the tinymce wysiwyg editor:
 == Change Log ==
 v2.0.5 (19/04/2009)
 - compat.php file with json_encode function for PHP versions < 5.2
+- Cursor and foreground change to notify user that next section is loading
 v2.0 (22/02/2009)
 - Complete rewrite, a few new features, some removed but same core functionality
 v0.22 (28/12/2008)

@@ -14,7 +14,7 @@ function box()
 		else
 			offset = (this.id - box_display + 1) * width;
 			
-		jQuery('#boxes').animate({marginLeft: -offset}, 1000); //.css('margin-left', -offset);	
+		jQuery('#boxes').animate({marginLeft: -offset}, 1500); //.css('margin-left', -offset);	
 	}
 	
 	this.content = function(content)

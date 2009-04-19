@@ -138,6 +138,23 @@
 			margin: 0 0 5px 0;
 			padding: 0;
 		}
+		#theDarkness{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.5);
+		}
+		#ajaxLoading{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			background:url('images/ajax-loader.gif');
+			width: 220px;
+			height: 19px;
+			margin: -10px 0 0 -110px;
+		}
 	</style>
 	<?php wp_enqueue_script('tinymce-popup', '/wp-includes/js/tinymce/tiny_mce_popup.js'); ?>
 	<?php wp_enqueue_script('jquery'); ?>
@@ -159,12 +176,18 @@
 			if(params == undefined)
 				params = '';
 				
+			jQuery('body').css('cursor', 'wait');
+			jQuery('#theDarkness').show();
+				
 			var html = jQuery.ajax({
 				type: 'POST',
 				url: 'tinymce-plugin.php',
 				data: 'action=' + action + ((params != undefined)? '&' + params : ''),
 				async: false
 			}).responseText;
+			
+			jQuery('body').css('cursor', 'default');
+			jQuery('#theDarkness').hide();
 			
 			return html;
 		}
@@ -232,5 +255,8 @@
 	
 	<div class="arrow right" onclick="moveBoxes(1);">&raquo;</div>
 
+	<div id="theDarkness">
+		<div id="ajaxLoading"></div>
+	</div>
 </body>
 </html>
