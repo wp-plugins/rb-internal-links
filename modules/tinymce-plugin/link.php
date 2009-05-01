@@ -8,7 +8,7 @@ $linkTarget = request('linkTarget');
 $linkAnchor = request('linkAnchor');
 
 if(empty($linkId) || empty($linkType))
-	$return = array('status' => 'error', 'message' => 'Incorrect link id or type, please start again.');
+	$return = array('status' => 'error', 'message' => __('Incorrect link id or type, please try again.'));
 else
 {
 	$code = '[intlink';

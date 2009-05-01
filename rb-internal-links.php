@@ -14,6 +14,7 @@
  Plugin URI: http://www.blograndom.com/blog/
  Description: Link to other blog posts and pages without specifying the full URL. Uses a UI to ease finding the post or page you want to link to.
  Version: 2.0.5
+ Text Domain: rbinternallinks
  Author: Arron Woods
  Author URI: http://www.blograndom.com
 
@@ -69,6 +70,9 @@ class Rb_Internal_Links{
 		add_shortcode('intlink', array(__CLASS__, 'shortcode'));
 		// add link to settings menu for plugin
 		add_action('admin_menu', array(__CLASS__, 'addOptionsPages'));
+		// start gettext
+		$plugin_dir = basename(dirname(__FILE__));
+		load_plugin_textdomain('rbinternallinks', 'wp-content/plugins/' . $plugin_dir . '/languages', $plugin_dir . '/languages');
 	}
 	
 	/**
