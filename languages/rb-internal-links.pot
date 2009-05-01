@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Arron Woods
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/rb-internal-links\n"
+"POT-Creation-Date: 2009-05-01 22:17+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: modules/tinymce-plugin/link.php:11
+msgid "Incorrect link id or type, please try again."
+msgstr ""
+
+#: templates/admin-settings.php:3
+msgid "settings"
+msgstr ""
+
+#: templates/admin-settings.php:6
+#, php-format
+msgid "Old code update process complete. Converted %d links"
+msgstr ""
+
+#: templates/admin-settings.php:10
+msgid "Settings saved"
+msgstr ""
+
+#: templates/admin-settings.php:16
+msgid "General"
+msgstr ""
+
+#: templates/admin-settings.php:19
+msgid "Enable WYSIWYG plugin"
+msgstr ""
+
+#: templates/admin-settings.php:24
+msgid "Yes"
+msgstr ""
+
+#: templates/admin-settings.php:30
+msgid "Return to shortcode"
+msgstr ""
+
+#: templates/admin-settings.php:33
+msgid "Post ID"
+msgstr ""
+
+#: templates/admin-settings.php:34
+msgid "Post slug"
+msgstr ""
+
+#: templates/admin-settings.php:39
+msgid "Default text for link if not specified"
+msgstr ""
+
+#: templates/admin-settings.php:42
+msgid "URL"
+msgstr ""
+
+#: templates/admin-settings.php:43
+msgid "Post title"
+msgstr ""
+
+#: templates/admin-settings.php:49
+msgid "Advanced"
+msgstr ""
+
+#: templates/admin-settings.php:52
+msgid "Surround shortcode with"
+msgstr ""
+
+#: templates/admin-settings.php:60
+msgid "Save Changes"
+msgstr ""
+
+#: templates/admin-settings.php:66
+msgid "Convert old internal link code"
+msgstr ""
+
+#: templates/admin-settings.php:67
+msgid ""
+"Used rb internal links before and wishing your old link code worked with the "
+"new version? Just run this conversion process."
+msgstr ""
+
+#: templates/admin-settings.php:68
+msgid "Please backup your database first, just in case!"
+msgstr ""
+
+#: templates/admin-settings.php:73
+msgid "Convert code"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:3
+msgid "Insert"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:7
+msgid "Type"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:11
+msgid "Id"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:23
+msgid "Link text"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:27
+msgid "Advanced options"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:31
+msgid "Class"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:36
+msgid "Target"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:38
+msgid "Default"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:47
+msgid "Anchor"
+msgstr ""
+
+#: templates/tinymce-plugin/form.php:53
+msgid "Insert link"
+msgstr ""
+
+#: templates/tinymce-plugin/search-results.php:3
+msgid "No results found"
+msgstr ""
+
+#: templates/tinymce-plugin/search.php:3
+msgid "Search posts"
+msgstr ""
+
+#: templates/tinymce-plugin/search.php:6 templates/tinymce-plugin/start.php:5
+msgid "Search"
+msgstr ""
+
+#: templates/tinymce-plugin/start.php:2
+msgid "Posts"
+msgstr ""
+
+#: templates/tinymce-plugin/start.php:3
+msgid "Pages"
+msgstr ""
+
+#: templates/tinymce-plugin/start.php:4
+msgid "Categories"
+msgstr ""
+
+#. Plugin Name of an extension
+msgid "RB Internal Links"
+msgstr ""
+
+#. Plugin URI of an extension
+msgid "http://www.blograndom.com/blog/"
+msgstr ""
+
+#. Description of an extension
+msgid ""
+"Link to other blog posts and pages without specifying the full URL. Uses a "
+"UI to ease finding the post or page you want to link to."
+msgstr ""
+
+#. Author of an extension
+msgid "Arron Woods"
+msgstr ""
+
+#. Author URI of an extension
+msgid "http://www.blograndom.com"
+msgstr ""
