@@ -52,7 +52,7 @@
 			top: 0;
 			height: 300px;
 			width: 25px;
-			background-color: #003366;
+			background-color: #444444;
 			color: #ffffff;
 			font-size: 20px;
 			text-align: center;
@@ -70,8 +70,6 @@
 		}
 		ul.box-list li{
 			padding: 4px;
-			background:url('images/list-bg.jpg');
-			background-repeat: repeat-x;
 			border-bottom: 1px #dcdcdc solid;
 			color: #404040;
 			cursor: pointer;
@@ -80,19 +78,28 @@
 			cursor: default;
 		}
 		ul.box-list li.item{
-			background:url('images/list-bg-item.jpg');
-			background-repeat: repeat-x;
+			background-color: #F7FFD6;
+		}
+		ul.box-list li .icon{
+			float: left;
+			margin-top: 2px;
+		}
+		ul.box-list li .title{
+			margin-left: 20px;
+			line-height: 16px;
 		}
 		ul.box-list li:hover, ul.box-list li.active{
-			background:url('images/list-bg-hover.jpg');
-			background-repeat: repeat-x;
+			background-color: #D6FCFF;
+		}
+		ul.box-list li.content:hover{
+			background-color: inherit;
 		}
 		div.details{
 			margin: 10px;
 		}
 		table.details{
 			font-size: 12px;
-			width: 180px;
+			width: 190px;
 			text-align: left;
 			margin: 0 0 10px 0;
 			padding: 0;
@@ -122,12 +129,13 @@
 		}
 		input, select{
 			clear: left;
-			width: 100%;
+			width: 190px;
 		}
 		fieldset.last{
 			background-color: #E2EBF3;
 			padding: 2px;
 			margin: 0px;
+			text-align: center;
 		}		
 		#showAdvanced{
 			display: block;

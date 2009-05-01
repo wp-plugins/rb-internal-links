@@ -21,7 +21,7 @@
 
 	<fieldset>
 		<label><?php _e('Link text', 'rb-internal-links'); ?></label>
-		<input type="text" name="linkText" style="width: 100%" value="<?php echo $content; ?>" />
+		<input type="text" name="linkText" value="<?php echo $content; ?>" />
 	</fieldset>
 	
 	<a id="showAdvanced"><?php _e('Advanced options', 'rb-internal-links'); ?> <img src="images/down.gif" /></a>
@@ -50,7 +50,7 @@
 	</div>
 	
 	<fieldset class="last">
-		<input type="submit" name="submit" style="float: right;" value="<?php _e('Insert link', 'rb-internal-links'); ?>" />
+		<input type="submit" name="submit" value="<?php _e('Insert link', 'rb-internal-links'); ?>" />
 	</fieldset>
 	
 
