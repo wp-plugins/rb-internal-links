@@ -4,7 +4,7 @@ Donate link: http://www.blograndom.com/
 Tags: links, posts, slugs, permalinks, shortcode
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 
 Link to posts and pages within your blog using shortcodes, similar to a wiki or cms. No need to remember full URLs, post ids or slugs with the wysiwyg UI plugin to help find previous posts and pages.
 
@@ -54,6 +54,9 @@ Using the tinymce wysiwyg editor:
 	Click "Insert Link"
 	
 == Change Log ==
+v2.0.6 (02/05/2009)
+- Gettext support, with .pot file in languages/
+- Removed li background gradient in favour of block colours
 v2.0.5 (19/04/2009)
 - compat.php file with json_encode function for PHP versions < 5.2
 - Cursor and foreground change to notify user that next section is loading
