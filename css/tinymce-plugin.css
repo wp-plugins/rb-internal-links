@@ -1,0 +1,159 @@
+body{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	width: 710px;
+	font-family: arial, tahoma, verdana;
+	font-size: 12px;
+}
+h2{
+	margin: 0 0 5px 0;
+	font-size: 12px;
+	padding: 0 0 4px 0;
+	border-bottom: 1px #BAC3CA solid;
+}
+a{
+	color: #00457A;
+}
+#container{
+	position: absolute;
+	top: 0;
+	left: 25px;
+	width: 650px;
+	height: 300px;
+	overflow: hidden;
+}
+#boxes{
+	position: relative;
+	float: left;
+	height: 300px;
+	width: 5000px;
+}
+.box{
+	position: relative;
+	float: left;
+	width: 215px;
+	height: 300px;
+	border-right: 1px #c0c0c0 solid;
+	overflow: auto;
+}
+.last{
+	border-right: 0px;
+}
+.arrow{
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 300px;
+	width: 25px;
+	background-color: #444444;
+	color: #ffffff;
+	font-size: 20px;
+	text-align: center;
+	line-height: 300px;
+	cursor: pointer;
+}
+.right{
+	left: 695px;
+}
+
+ul.box-list{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+ul.box-list li{
+	padding: 4px;
+	border-bottom: 1px #dcdcdc solid;
+	color: #404040;
+	cursor: pointer;
+}
+ul.box-list li.content{
+	cursor: default;
+}
+ul.box-list li.item{
+	background-color: #F7FFD6;
+}
+ul.box-list li .icon{
+	float: left;
+	margin-top: 2px;
+}
+ul.box-list li .title{
+	margin-left: 20px;
+	line-height: 16px;
+}
+ul.box-list li:hover, ul.box-list li.active{
+	background-color: #D6FCFF;
+}
+ul.box-list li.content:hover{
+	background-color: inherit;
+}
+div.details{
+	margin: 10px;
+}
+table.details{
+	font-size: 12px;
+	width: 190px;
+	text-align: left;
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+table.details td.heading
+{
+	font-weight: bold;
+	width: 30px;
+}
+table.details td{
+	border: 1px #dedede solid;
+}
+#formErrors{
+	color: #ff0000;
+}
+form.link{
+	margin-top: 5px;
+}
+fieldset{
+	padding: 0;
+	margin: 0 0 5px 0;
+	border: 0;
+}
+label{
+	margin: 0 0 2px 0;
+	padding: 0;
+}
+input, select{
+	clear: left;
+	width: 190px;
+}
+fieldset.last{
+	background-color: #E2EBF3;
+	padding: 2px;
+	margin: 0px;
+	text-align: center;
+}		
+#showAdvanced{
+	display: block;
+	margin: 10px 0;
+}
+
+#formAdvanced{
+	margin: 0 0 5px 0;
+	padding: 0;
+}
+#theDarkness{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+}
+#ajaxLoading{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background:url('images/ajax-loader.gif');
+	width: 220px;
+	height: 19px;
+	margin: -10px 0 0 -110px;
+}

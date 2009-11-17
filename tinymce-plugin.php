@@ -1,5 +1,7 @@
 <?php
 
+define('WP_ADMIN', true);
+
 require('../../../wp-config.php');
 $path = dirname(__FILE__);
 

@@ -21,7 +21,7 @@
 
 	<fieldset>
 		<label><?php _e('Link text', 'rb-internal-links'); ?></label>
-		<input type="text" name="linkText" value="<?php echo $content; ?>" />
+		<input type="text" name="linkText" id="linkText" value="" />
 	</fieldset>
 	
 	<a id="showAdvanced"><?php _e('Advanced options', 'rb-internal-links'); ?> <img src="images/down.gif" /></a>
@@ -58,6 +58,11 @@
 </li></ul>
 
 <script type="text/javascript">
+
+jQuery(function(){
+	jQuery('#linkText').val(tinyMCEPopup.editor.selection.getContent({format : 'text'}));	
+});
+
 jQuery('#showAdvanced').click(function(){
 	var advanced = jQuery('#formAdvanced');
 	if(advanced.is(':visible'))
