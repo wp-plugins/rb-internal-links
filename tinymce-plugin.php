@@ -2,6 +2,9 @@
 
 define('WP_ADMIN', true);
 
+$current_error_reporting = error_reporting();
+error_reporting($current_error_reporting & ~E_STRICT);
+
 require('../../../wp-config.php');
 $path = dirname(__FILE__);
 
@@ -34,3 +37,5 @@ function request($key, $default = false)
 {
 	return isset($_REQUEST[$key])? $_REQUEST[$key] : $default;
 }
+
+error_reporting($current_error_reporting);
