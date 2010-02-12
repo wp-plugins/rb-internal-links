@@ -18,7 +18,12 @@ function loadHtml(action, params)
 		type: 'POST',
 		url: 'tinymce-plugin.php',
 		data: 'action=' + action + ((params != undefined)? '&' + params : ''),
-		async: false
+		async: false,
+		error: function(data)
+		{
+			jQuery('body').content('Error: ' + data);
+			jQuery('#theDarkness').hide();
+		}
 	}).responseText;
 	
 	jQuery('body').css('cursor', 'default');
