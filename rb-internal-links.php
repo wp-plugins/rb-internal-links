@@ -13,7 +13,7 @@
  Plugin Name: RB Internal Links
  Plugin URI: http://www.blograndom.com/blog/
  Description: Link to other blog posts and pages without specifying the full URL. Uses a UI to ease finding the post or page you want to link to.
- Version: 2.0.8
+ Version: 2.0.9
  Text Domain: rb-internal-links
  Author: Arron Woods
  Author URI: http://www.blograndom.com
