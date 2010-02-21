@@ -1,9 +1,5 @@
 jQuery(document).ready(function(){
 	loadStart();
-	// remove the tinymce plugin css
-	var allLinks = document.getElementsByTagName("link");
-	allLinks[allLinks.length-1].parentNode.removeChild(allLinks[allLinks.length-1]);
-	allLinks[allLinks.length-1].parentNode.removeChild(allLinks[allLinks.length-1]);
 });
 		
 function loadHtml(action, params)

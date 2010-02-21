@@ -4,8 +4,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>RB Internal Linker</title>
 	<link rel="stylesheet" href="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/css/tinymce-plugin.css?ver=<?php echo date('Ymd'); ?>" type="text/css" media="screen" />
+  <link rel="stylesheet" href="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/css/tinymce-plugin.css?ver=<?php echo date('Ymd'); ?>" type="text/css" media="screen" />
 	<?php wp_enqueue_script('jquery'); ?>
-	<?php wp_head(); ?>
+  <?php do_action('admin_enqueue_scripts'); ?>
+  <?php do_action('admin_print_styles'); ?>
+  <?php do_action('admin_print_scripts'); ?>
+	<?php do_action('admin_head'); ?>
 	<script type="text/javascript" src="../../../wp-includes/js/tinymce/tiny_mce_popup.js?ver=<?php echo date('Ymd'); ?>"></script>
 	<script type="text/javascript" src="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/js/box.js?ver=<?php echo date('Ymd'); ?>"></script>
 	<script type="text/javascript" src="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/js/tinymce-plugin.js?ver=<?php echo date('Ymd'); ?>"></script>	

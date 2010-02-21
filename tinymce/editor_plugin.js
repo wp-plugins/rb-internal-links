@@ -15,7 +15,8 @@
 					file : url + '/../tinymce-plugin.php?content=' + escape(tinyMCE.activeEditor.selection.getContent()),
 					width : 720,
 					height : 302,
-					inline : 1
+					inline : 1,
+          popup_css : false,
 				}, {
 					plugin_url : url // Plugin absolute URL
 				});
