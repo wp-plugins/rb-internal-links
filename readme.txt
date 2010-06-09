@@ -55,7 +55,7 @@ Using the tinymce wysiwyg editor:
 	
 == Change Log ==
 v2.0.12 (09/06/2010)
-- Removed dependency on wp_enqueue_scripts and include Google CDN version of jquery (fix even more compatibility issues)
+- Removed dependency on wp_enqueue_scripts and include jquery direct (fix even more compatibility issues)
 v2.0.11 (21/02/2010)
 - Tinymce plugin template no longer uses wp_head (should fix a lot of compatibility issues)
 v2.0.10 (14/02/2010)
