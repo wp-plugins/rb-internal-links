@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>RB Internal Linker</title>
 	<link rel="stylesheet" href="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/css/tinymce-plugin.css?ver=<?php echo date('Ymd'); ?>" type="text/css" media="screen" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../wp-includes/js/jquery/jquery.js"></script>
 	<script type="text/javascript" src="../../../wp-includes/js/tinymce/tiny_mce_popup.js?ver=<?php echo date('Ymd'); ?>"></script>
 	<script type="text/javascript" src="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/js/box.js?ver=<?php echo date('Ymd'); ?>"></script>
 	<script type="text/javascript" src="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/js/tinymce-plugin.js?ver=<?php echo date('Ymd'); ?>"></script>	
