@@ -5,7 +5,7 @@ define('WP_ADMIN', true);
 $current_error_reporting = error_reporting();
 error_reporting($current_error_reporting & ~E_STRICT);
 
-require('../../../wp-config.php');
+require('../../../wp-load.php');
 $path = realpath(dirname(__FILE__));
 
 require($path . '/compat.php');
