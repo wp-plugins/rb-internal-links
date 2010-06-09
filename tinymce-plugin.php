@@ -6,7 +6,7 @@ $current_error_reporting = error_reporting();
 error_reporting($current_error_reporting & ~E_STRICT);
 
 require('../../../wp-config.php');
-$path = dirname(__FILE__);
+$path = realpath(dirname(__FILE__));
 
 require($path . '/compat.php');
 
