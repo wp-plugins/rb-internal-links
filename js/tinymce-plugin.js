@@ -42,11 +42,16 @@ function loadType(type)
 	b.content(html);
 }
 
-function loadCategory(type, parent)
+function loadCategory(type, parent, post_type)
 {
 	var b = new box();
-	var html = loadHtml('type', 'type=' + type + '&parent=' + parent);
+	var html = loadHtml('type', 'type=' + type + '&parent=' + parent + '&post_type=' + post_type);
 	b.content(html);
+}
+
+function loadCustom(post_type)
+{
+	loadCategory('post', 0, post_type);
 }
 
 function loadForm(type, id)
