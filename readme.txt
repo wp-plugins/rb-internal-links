@@ -1,9 +1,9 @@
 === RB Internal Links ===
 Contributors: Arron Woods
-Donate link: http://www.blograndom.com/
-Tags: links, posts, slugs, permalinks, shortcode
+Donate link: http://www.blograndom.com/blog/extras/rb-internal-links-plugin/#donate
+Tags: links, posts, slugs, permalinks, shortcode, types
 Requires at least: 2.5
-Tested up to: 2.9.2
+Tested up to: 3.1
 Stable tag: 2.0.12
 
 Link to posts and pages within your blog using shortcodes, similar to a wiki or cms. No need to remember full URLs, post ids or slugs with the wysiwyg UI plugin to help find previous posts and pages.
