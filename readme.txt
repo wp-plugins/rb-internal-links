@@ -4,7 +4,7 @@ Donate link: http://www.blograndom.com/blog/extras/rb-internal-links-plugin/#don
 Tags: links, posts, slugs, permalinks, shortcode, types
 Requires at least: 2.5
 Tested up to: 3.1
-Stable tag: 2.0.12
+Stable tag: 2.0.13
 
 Link to posts and pages within your blog using shortcodes, similar to a wiki or cms. No need to remember full URLs, post ids or slugs with the wysiwyg UI plugin to help find previous posts and pages.
 
@@ -54,6 +54,12 @@ Using the tinymce wysiwyg editor:
 	Click "Insert Link"
 	
 == Change Log ==
+v2.0.13 (08/03/2011)
+- Added support for custom post types
+- WIKI style support for posts that don't exist when logged in as an admin
+- Class of "missingLink" applied to anchor of links with no post/page
+- Show posts with a status of 'post', 'draft', 'pending' or 'future' in UI list
+- Italian translation file
 v2.0.12 (09/06/2010)
 - Removed dependency on wp_enqueue_scripts and include jquery direct (fix even more compatibility issues)
 - Include wp-load.php instead of wp-config.php

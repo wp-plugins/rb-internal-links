@@ -111,13 +111,18 @@ class Rb_Internal_Links {
         $params = $atts;
         $url = self::url($params['id'], $params['type'], $content) . ((isset($params['anchor'])) ? '#' . $params['anchor'] : '');
 
-        $prefix .= '<a' . self::shortcode_attr('href', $url);
-        unset($params['id'], $params['type'], $params['anchor']);
+        if ($url) {
+            $prefix .= '<a' . self::shortcode_attr('href', $url);
+            unset($params['id'], $params['type'], $params['anchor']);
 
-        foreach ($params AS $attr => $value)
-            $prefix .= self::shortcode_attr($attr, $value);
+            foreach ($params AS $attr => $value) {
+                $prefix .= self::shortcode_attr($attr, $value);
+            }
 
-        $prefix .= '>';
+            $prefix .= '>';
+        } else {
+            $prefix .= '<a href="#" class="missingLink">';
+        }
 
         $content = do_shortcode($content);
 
@@ -157,12 +162,17 @@ class Rb_Internal_Links {
                 global $wpdb;
                 $field = (is_numeric($id)) ? 'ID' : 'post_name';
                 $post = $wpdb->get_row("SELECT ID, post_title FROM $wpdb->posts WHERE $field = '$id'");
-                if (empty($post))
-                    return '#';
-                else {
+                if (empty($post)) {
+                    if (is_user_logged_in ()) {
+                        return get_option('siteurl') . '/wp-admin/post-new.php?post_title=' . urlencode($content);
+                    } else {
+                        return false;
+                    }
+                } else {
                     $url = get_permalink($post->ID);
-                    if (empty($content))
+                    if (empty($content)) {
                         $content = self::title($id, $type, $post, $url);
+                    }
                     return $url;
                 }
             case 'category':
@@ -236,8 +246,8 @@ class Rb_Internal_Links {
      */
     function adminSettings() {
         if (isset($_POST['rbinternal_submit'])) {
-            foreach(self::$options AS $option){
-                $default = isset(self::$defaults[$option])? self::$defaults[$option] : '';
+            foreach (self::$options AS $option) {
+                $default = isset(self::$defaults[$option]) ? self::$defaults[$option] : '';
                 $value = isset($_POST[$option]) ? $_POST[$option] : $default;
                 self::saveOption($option, $value);
             }

@@ -9,7 +9,7 @@ switch ($type) {
         $categories = get_categories(array('type' => 'post', 'orderby' => 'name', 'hide_empty' => true));
         $categories = filter_categories($categories, $parent);
 
-        $items = ($parent > 0 || $post_type !== 'post') ? get_posts(array('numberposts' => -1, 'post_type' => $post_type, 'category' => $parent)) : array();
+        $items = ($parent > 0 || $post_type !== 'post') ? get_posts(array('numberposts' => -1, 'post_type' => $post_type, 'category' => $parent, 'post_status' => 'publish,pending,draft,future')) : array();
 
         // remove custom post types that are categorised from the root
         if($parent === 0 && $post_type !== 'post'){
@@ -26,7 +26,7 @@ switch ($type) {
     case 'page':
         $topPage = ($parent > 0) ? get_page($parent) : false;
 
-        $pages = get_pages(array('child_of' => 0, 'sort_column' => Rb_Internal_Links::loadOption('page_order')));
+        $pages = get_pages(array('child_of' => 0, 'sort_column' => Rb_Internal_Links::loadOption('page_order'), 'post_status' => 'publish'));
         $pages = filter_categories($pages, $parent, 'post_parent');
         include($path . '/templates/tinymce-plugin/pages.php');
         break;
