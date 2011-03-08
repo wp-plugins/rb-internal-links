@@ -26,7 +26,7 @@ switch ($type) {
     case 'page':
         $topPage = ($parent > 0) ? get_page($parent) : false;
 
-        $pages = get_pages(array('child_of' => 0));
+        $pages = get_pages(array('child_of' => 0, 'sort_column' => Rb_Internal_Links::loadOption('page_order')));
         $pages = filter_categories($pages, $parent, 'post_parent');
         include($path . '/templates/tinymce-plugin/pages.php');
         break;

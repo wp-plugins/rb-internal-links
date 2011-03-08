@@ -54,8 +54,8 @@ class Rb_Internal_Links {
 
     static $pluginName = 'RB Internal Links';
     static $optionPrefix = 'rbinternal_';
-    static $options = array('tinymce', 'return_param', 'default_text', 'code_prefix', 'code_suffix');
-    static $defaults = array('tinymce' => true, 'return_param' => 'id', 'default_text' => 'url');
+    static $options = array('tinymce', 'return_param', 'default_text', 'code_prefix', 'code_suffix', 'page_order');
+    static $defaults = array('tinymce' => true, 'return_param' => 'id', 'default_text' => 'url', 'page_order' => 'post_title');
     static $convert_count = 0;
 
     /**
@@ -236,17 +236,11 @@ class Rb_Internal_Links {
      */
     function adminSettings() {
         if (isset($_POST['rbinternal_submit'])) {
-            $tinymce = (isset($_POST['tinymce'])) ? $_POST['tinymce'] : '0';
-            $return_param = (isset($_POST['return_param'])) ? $_POST['return_param'] : 'id';
-            $default_text = (isset($_POST['default_text'])) ? $_POST['default_text'] : 'url';
-            $code_prefix = (isset($_POST['code_prefix'])) ? $_POST['code_prefix'] : '';
-            $code_suffix = (isset($_POST['code_suffix'])) ? $_POST['code_suffix'] : '';
-
-            self::saveOption('tinymce', $tinymce);
-            self::saveOption('return_param', $return_param);
-            self::saveOption('default_text', $default_text);
-            self::saveOption('code_prefix', $code_prefix);
-            self::saveOption('code_suffix', $code_suffix);
+            foreach(self::$options AS $option){
+                $default = isset(self::$defaults[$option])? self::$defaults[$option] : '';
+                $value = isset($_POST[$option]) ? $_POST[$option] : $default;
+                self::saveOption($option, $value);
+            }
 
             $updateSuccess = true;
         }

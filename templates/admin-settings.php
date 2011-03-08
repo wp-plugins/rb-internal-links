@@ -20,6 +20,7 @@
 	<td>
 		<fieldset>
 			<label for="enable_wysiwyg">
+                                <input name="tinymce" type="hidden" value="0" />
 				<input name="tinymce" type="checkbox" id="enable_wysiwyg" value="1" <?php if($options['tinymce']): ?>checked="checked"<?php endif; ?> />
 				<?php _e('Yes', 'rb-internal-links'); ?>
 			</label>
@@ -52,6 +53,15 @@
 	<th scope="row"><label for="code_prefix"><?php _e('Surround shortcode with', 'rb-internal-links'); ?></label></th>
 	<td>
 		<input type="text" name="code_prefix" value="<?php echo $options['code_prefix']; ?>" /> [intlink id= ...] <input type="text" name="code_suffix" value="<?php echo $options['code_suffix']; ?>" />
+	</td>
+	</tr>
+        <tr valign="top">
+	<th scope="row"><label for="page_order"><?php _e('Page list order', 'rb-internal-links'); ?></label></th>
+	<td>
+		<select name="page_order">
+                    <option value="post_title" <?php if($options['page_order'] == 'post_title'): ?>selected="selected"<?php endif; ?>>Post title</option>
+                    <option value="menu_order" <?php if($options['page_order'] == 'menu_order'): ?>selected="selected"<?php endif; ?>>Menu order</option>
+                </select>
 	</td>
 	</tr>
 	</table>
