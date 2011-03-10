@@ -71,20 +71,6 @@ class Rb_Internal_Links {
         // start gettext
         $plugin_dir = basename(dirname(__FILE__));
         load_plugin_textdomain('rb-internal-links', 'wp-content/plugins/' . $plugin_dir . '/languages', $plugin_dir . '/languages');
-
-        register_post_type('rb_internal_test',
-                array(
-                    'labels' => array(
-                        'name' => __('RB Tests'),
-                        'singular_name' => __('RB Test')
-                    ),
-                    'public' => true,
-                    'rewrite' => array('slug' => 'test'),
-                    'hierarchical' => true,
-                    'supports' => array('title', 'editor', 'page-attributes'),
-                    'taxonomies' => array('category'),
-                )
-        );
     }
 
     /**
