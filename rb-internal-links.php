@@ -13,7 +13,7 @@
   Plugin Name: RB Internal Links
   Plugin URI: http://www.blograndom.com/blog/
   Description: Link to other blog posts and pages without specifying the full URL. Uses a UI to ease finding the post or page you want to link to.
-  Version: 2.0.13
+  Version: 2.0.14
   Text Domain: rb-internal-links
   Author: Arron Woods
   Author URI: http://www.blograndom.com
@@ -156,15 +156,16 @@ class Rb_Internal_Links {
                     }
                 } else {
                     $url = get_permalink($post->ID);
-                    if (empty($content)) {
+                    if (empty($content) || $content === '{{empty}}') {
                         $content = self::title($id, $type, $post, $url);
                     }
                     return $url;
                 }
             case 'category':
                 $url = get_category_link($id);
-                if (empty($content))
+                if (empty($content) || $content === '{{empty}}') {
                     $content = self::title($id, $type, null, $url);
+                }
                 return $url;
             default:
                 return '#';
@@ -297,7 +298,7 @@ class Rb_Internal_Links {
     }
 
     function getPluginUrl() {
-        return site_url('wp-content/plugins/' . basename(dirname(__FILE__)));
+        return site_url('wp-content/plugins/rb-internal-links');
     }
 
     function getCurrentPage() {
