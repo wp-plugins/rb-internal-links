@@ -73,7 +73,7 @@ v2.0.9 (12/02/2010)
 - German translation files
 - Ajax error handling
 v2.0.8 (07/12/2009)
-- Added be_BY translations (thanks to http://www.fatcow.com)
+- Added be_BY translations (thanks to fatcow)
 - Error supression in tinymce-plugin.php for compat (thanks to matthew.oriordan)
 v2.0.7 (17/11/2009)
 - Fixed conflict with WP-Super-Cache
