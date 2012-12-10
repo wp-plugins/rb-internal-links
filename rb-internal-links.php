@@ -13,7 +13,7 @@
   Plugin Name: RB Internal Links
   Plugin URI: http://www.blograndom.com/blog/
   Description: Link to other blog posts and pages without specifying the full URL. Uses a UI to ease finding the post or page you want to link to.
-  Version: 2.0.14
+  Version: 2.0.15
   Text Domain: rb-internal-links
   Author: Arron Woods
   Author URI: http://www.blograndom.com
@@ -45,6 +45,8 @@
 if (floatval(phpversion()) < 5)
     die('You must have PHP version 5+ to use RB Internal Links');
 
+define('RBINTERNAL_PATH', plugin_dir_path(__FILE__));
+
 // start plugin
 add_action('init', array('Rb_Internal_Links', 'enable'));
 // add tinymce button to wysiwyg editor
@@ -70,7 +72,7 @@ class Rb_Internal_Links {
         add_action('admin_menu', array(__CLASS__, 'addOptionsPages'));
         // start gettext
         $plugin_dir = basename(dirname(__FILE__));
-        load_plugin_textdomain('rb-internal-links', 'wp-content/plugins/' . $plugin_dir . '/languages', $plugin_dir . '/languages');
+        load_plugin_textdomain('rb-internal-links', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
 
     /**
@@ -83,7 +85,7 @@ class Rb_Internal_Links {
      * @param string	$content
      * @return string
      */
-    function shortcode($atts, $content=null) {
+    function shortcode($atts, $content = null) {
         if (!isset($atts['id']))
             throw new Exception('Incorrect shortcode for RB Internal Links');
 
@@ -149,7 +151,7 @@ class Rb_Internal_Links {
                 $field = (is_numeric($id)) ? 'ID' : 'post_name';
                 $post = $wpdb->get_row("SELECT ID, post_title FROM $wpdb->posts WHERE $field = '$id'");
                 if (empty($post)) {
-                    if (is_user_logged_in ()) {
+                    if (is_user_logged_in()) {
                         return get_option('siteurl') . '/wp-admin/post-new.php?post_title=' . urlencode($content);
                     } else {
                         return false;
@@ -298,7 +300,7 @@ class Rb_Internal_Links {
     }
 
     function getPluginUrl() {
-        return site_url('wp-content/plugins/rb-internal-links');
+        return rtrim(plugin_dir_url(__FILE__), '/');
     }
 
     function getCurrentPage() {
