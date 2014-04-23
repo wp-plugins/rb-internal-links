@@ -65,7 +65,7 @@ class Rb_Internal_Links {
      *
      * Called when wordpress is initialised, sets up the actions/hooks/shortcode used throughout the system
      */
-    function enable() {
+    static function enable() {
         // add shortcode hook for processing our links
         add_shortcode('intlink', array(__CLASS__, 'shortcode'));
         // add link to settings menu for plugin
@@ -85,7 +85,7 @@ class Rb_Internal_Links {
      * @param string	$content
      * @return string
      */
-    function shortcode($atts, $content = null) {
+    static function shortcode($atts, $content = null) {
         if (!isset($atts['id']))
             throw new Exception('Incorrect shortcode for RB Internal Links');
 
@@ -129,7 +129,7 @@ class Rb_Internal_Links {
      * @param string	$attr	The attribute key
      * @param string	$value	The value to put within quote marks (also gets escaped)
      */
-    function shortcode_attr($attr, $value) {
+    static function shortcode_attr($attr, $value) {
         return ' ' . $attr . '="' . htmlspecialchars($value) . '"';
     }
 
@@ -143,7 +143,7 @@ class Rb_Internal_Links {
      * @param string	$type
      * @return string	The url
      */
-    function url($id, $type = 'post', &$content = null) {
+    static function url($id, $type = 'post', &$content = null) {
         switch ($type) {
             case 'post':
             case 'page':
@@ -183,7 +183,7 @@ class Rb_Internal_Links {
      * @param string	$type
      * @return string	The url
      */
-    function title($id, $type = 'post', $data = null, $url = null) {
+    static function title($id, $type = 'post', $data = null, $url = null) {
         switch (self::loadOption('default_text')) {
             case 'title':
                 switch ($type) {
@@ -200,7 +200,7 @@ class Rb_Internal_Links {
         }
     }
 
-    function saveOption($key, $value) {
+    static function saveOption($key, $value) {
         $thisKey = self::$optionPrefix . $key;
         if (get_option($thisKey) === false)
             add_option($thisKey, $value);
@@ -208,7 +208,7 @@ class Rb_Internal_Links {
             update_option($thisKey, $value);
     }
 
-    function loadOption($key) {
+    static function loadOption($key) {
         $option = get_option(self::$optionPrefix . $key);
         if ($option === false)
             $option = ((isset(self::$defaults[$key])) ? self::$defaults[$key] : false);
@@ -216,7 +216,7 @@ class Rb_Internal_Links {
         return $option;
     }
 
-    function loadOptions() {
+    static function loadOptions() {
         $options = array();
         foreach (self::$options AS $key)
             $options[$key] = self::loadOption($key);
@@ -226,14 +226,14 @@ class Rb_Internal_Links {
     /**
      * Add page to admin panel menu
      */
-    function addOptionsPages() {
-        add_options_page(self::$pluginName, self::$pluginName, 8, __FILE__, array(__CLASS__, 'adminSettings'));
+    static function addOptionsPages() {
+        add_options_page(self::$pluginName, self::$pluginName, 'manage_options', 'rb-internal-links', array(__CLASS__, 'adminSettings'));
     }
 
     /**
      * Renders the settings page in the admin panel
      */
-    function adminSettings() {
+    static function adminSettings() {
         if (isset($_POST['rbinternal_submit'])) {
             foreach (self::$options AS $option) {
                 $default = isset(self::$defaults[$option]) ? self::$defaults[$option] : '';
@@ -260,7 +260,7 @@ class Rb_Internal_Links {
     /**
      * Sets up the filters that will get called if we're editing a post or a page
      */
-    function addWysiwygFilters() {
+    static function addWysiwygFilters() {
         if (self::loadOption('tinymce')) {
             // Don't bother doing this stuff if the current user lacks permissions
             if (!current_user_can('edit_posts') && !current_user_can('edit_pages'))
@@ -278,7 +278,7 @@ class Rb_Internal_Links {
     /**
      * Increment tinymce version number for cache of config
      */
-    function wysiwygRefresh($ver) {
+    static function wysiwygRefresh($ver) {
         $ver += 3;
         return $ver;
     }
@@ -286,7 +286,7 @@ class Rb_Internal_Links {
     /**
      * Adds the tinymce plugin to the list of available plugins
      */
-    function wysiwygPluginAdd($plugin_array) {
+    static function wysiwygPluginAdd($plugin_array) {
         $plugin_array['rbinternallinks'] = self::getPluginUrl() . '/tinymce/editor_plugin.js';
         return $plugin_array;
     }
@@ -294,16 +294,16 @@ class Rb_Internal_Links {
     /**
      * Add the button to tinymce
      */
-    function wysiwygButtonAdd($buttons) {
+    static function wysiwygButtonAdd($buttons) {
         array_push($buttons, 'separator', 'rbinternallinks');
         return $buttons;
     }
 
-    function getPluginUrl() {
+    static function getPluginUrl() {
         return rtrim(plugin_dir_url(__FILE__), '/');
     }
 
-    function getCurrentPage() {
+    static function getCurrentPage() {
         $page = basename(__FILE__);
         if (isset($_GET['page']) && !empty($_GET['page'])) {
             $page = preg_replace('[^a-zA-Z0-9\.\_\-]', '', $_GET['page']);
@@ -315,7 +315,7 @@ class Rb_Internal_Links {
             return $_SERVER['PHP_SELF'] . "?page=" . $page;
     }
 
-    function updateOldCode() {
+    static function updateOldCode() {
         $posts = get_posts(array('numberposts' => -1));
         foreach ($posts AS $item) {
             $content = preg_replace_callback("/<!--(post|intlink)([^-->].*?)-->/i", array(__CLASS__, 'processOldCode'), $item->post_content);
@@ -335,7 +335,7 @@ class Rb_Internal_Links {
         }
     }
 
-    function processOldCode($code) {
+    static function processOldCode($code) {
         $params = isset($code[2]) ? $code[2] : false;
         if (!$params)
             return false;
