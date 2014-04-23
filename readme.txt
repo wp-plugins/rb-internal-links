@@ -3,8 +3,8 @@ Contributors: Arron Woods
 Donate link: http://www.blograndom.com/blog/extras/rb-internal-links-plugin/#donate
 Tags: links, posts, slugs, permalinks, shortcode, types
 Requires at least: 2.5
-Tested up to: 3.1.6
-Stable tag: 2.0.14
+Tested up to: 3.9
+Stable tag: 2.0.16
 
 Link to posts and pages within your blog using shortcodes, similar to a wiki or cms. No need to remember full URLs, post ids or slugs with the wysiwyg UI plugin to help find previous posts and pages.
 
