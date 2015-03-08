@@ -1,11 +1,11 @@
 <?php
 
-$linkId = request('linkId');
-$linkType = request('linkType');
-$linkText = request('linkText');
-$linkClass = request('linkClass');
-$linkTarget = request('linkTarget');
-$linkAnchor = request('linkAnchor');
+$linkId = Rb_Internal_Links::requestVar('linkId');
+$linkType = Rb_Internal_Links::requestVar('linkType');
+$linkText = Rb_Internal_Links::requestVar('linkText');
+$linkClass = Rb_Internal_Links::requestVar('linkClass');
+$linkTarget = Rb_Internal_Links::requestVar('linkTarget');
+$linkAnchor = Rb_Internal_Links::requestVar('linkAnchor');
 
 if (empty($linkId) || empty($linkType))
     $return = array('status' => 'error', 'message' => __('Incorrect link id or type, please try again.'));

@@ -12,7 +12,7 @@
 			// Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceExample');
 			ed.addCommand('rbinternallinks', function() {
 				ed.windowManager.open({
-					file : url + '/../tinymce-plugin.php?content=' + escape(tinyMCE.activeEditor.selection.getContent()),
+                                        file: tinymce.documentBaseURL + '/admin-ajax.php?action=rb-internal-links-ajax',
 					width : 720,
 					height : 302,
 					inline : 1,

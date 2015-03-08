@@ -1,5 +1,5 @@
 <?php
-$q = request('q');
+$q = Rb_Internal_Links::requestVar('q');
 
 if(empty($q))
 	$items = array();

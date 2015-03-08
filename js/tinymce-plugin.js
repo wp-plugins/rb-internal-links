@@ -12,8 +12,8 @@ function loadHtml(action, params)
 		
 	var html = jQuery.ajax({
 		type: 'POST',
-		url: 'tinymce-plugin.php',
-		data: 'action=' + action + ((params != undefined)? '&' + params : ''),
+		url: RbInternalLinksAjax.url,
+		data: 'action=rb-internal-links-ajax&rb-internal-links-action=' + action + ((params != undefined)? '&' + params : ''),
 		async: false,
 		error: function(data)
 		{
@@ -73,8 +73,8 @@ function submitForm(form)
 {
 	data = jQuery(form).serialize();
 	jQuery.post(
-		'tinymce-plugin.php',
-		'action=link&' + data,
+		RbInternalLinksAjax.url,
+		'action=rb-internal-links-ajax&rb-internal-links-action=link&' + data,
 		function(result){
 			if(result.status == 'error')
 				jQuery('#formErrors').text(result.message);

@@ -1,8 +1,8 @@
 <?php
 
-$type = request('type', 'post');
-$parent = (int) request('parent', 0);
-$post_type = request('post_type', 'post');
+$type = Rb_Internal_Links::requestVar('type', 'post');
+$parent = (int) Rb_Internal_Links::requestVar('parent', 0);
+$post_type = Rb_Internal_Links::requestVar('post_type', 'post');
 
 switch ($type) {
     case 'post':

@@ -24,7 +24,7 @@
 		<input type="text" name="linkText" id="linkText" value="" />
 	</fieldset>
 	
-	<a id="showAdvanced"><?php _e('Advanced options', 'rb-internal-links'); ?> <img src="images/down.gif" /></a>
+	<a id="showAdvanced"><?php _e('Advanced options', 'rb-internal-links'); ?> <img src="<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/images/down.gif" /></a>
 	
 	<div id="formAdvanced" style="display: none;">
 		<fieldset>
@@ -68,12 +68,12 @@ jQuery('#showAdvanced').click(function(){
 	if(advanced.is(':visible'))
 	{
 		advanced.slideUp();
-		jQuery('#showAdvanced > img').attr('src', 'images/down.gif');
+		jQuery('#showAdvanced > img').attr('src', '<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/images/down.gif');
 	}
 	else
 	{
 		advanced.slideDown();
-		jQuery('#showAdvanced > img').attr('src', 'images/up.gif');
+		jQuery('#showAdvanced > img').attr('src', '<?php echo WP_PLUGIN_URL; ?>/rb-internal-links/images/up.gif');
 	}
 });
 </script>

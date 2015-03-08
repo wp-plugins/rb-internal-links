@@ -70,6 +70,9 @@ class Rb_Internal_Links {
         add_shortcode('intlink', array(__CLASS__, 'shortcode'));
         // add link to settings menu for plugin
         add_action('admin_menu', array(__CLASS__, 'addOptionsPages'));
+        // register ajax action
+        add_action('wp_ajax_rb-internal-links-ajax', array(__CLASS__, 'ajaxAction'));
+
         // start gettext
         $plugin_dir = basename(dirname(__FILE__));
         load_plugin_textdomain('rb-internal-links', false, dirname(plugin_basename(__FILE__)) . '/languages/');
@@ -255,6 +258,42 @@ class Rb_Internal_Links {
 
         $options = self::loadOptions();
         include_once(dirname(__FILE__) . '/templates/admin-settings.php');
+    }
+    
+    static function requestVar($key, $default = false){
+        return isset($_REQUEST[$key])? $_REQUEST[$key] : $default;
+    }
+
+    static function ajaxAction() {
+        if (!current_user_can('edit_posts')) {
+            die('edit_posts permission required');
+        }
+
+        $path = __DIR__;
+        $content = addslashes(self::requestVar('content'));
+        $action = self::requestVar('rb-internal-links-action');
+
+        switch ($action) {
+            case 'start':
+                include($path . '/templates/tinymce-plugin/start.php');
+                break;
+            case 'type':
+                include($path . '/modules/tinymce-plugin/type.php');
+                break;
+            case 'search':
+                include($path . '/modules/tinymce-plugin/search.php');
+                break;
+            case 'form':
+                include($path . '/modules/tinymce-plugin/form.php');
+                break;
+            case 'link':
+                include($path . '/modules/tinymce-plugin/link.php');
+                break;
+            default:
+                include($path . '/templates/tinymce-plugin/index.php');
+        }
+        
+        exit;
     }
 
     /**
